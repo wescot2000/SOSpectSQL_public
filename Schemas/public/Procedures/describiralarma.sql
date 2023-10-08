@@ -98,6 +98,7 @@ BEGIN
 					,ip_usuario_originador
 					,distancia_alarma_originador
 					,idioma_origen
+					,flag_es_cierre_alarma
 				)
 		VALUES
 			(
@@ -113,6 +114,7 @@ BEGIN
 				,p_IpUsuario
 				,v_distancia_alarma_originador
 				,p_idioma
+				,cast(false as boolean)
 			);	
 
 		if v_tipoalarma_id_actual<>p_tipoalarma_id and p_persona_id=v_persona_id_creador then

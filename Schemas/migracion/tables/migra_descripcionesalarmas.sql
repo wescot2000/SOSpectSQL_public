@@ -19,7 +19,9 @@ CREATE TABLE IF NOT EXISTS migracion.migra_descripcionesalarmas
     longitud_originador numeric(9,6),
     ip_usuario_originador character varying(50) COLLATE pg_catalog."default",
     distancia_alarma_originador numeric(9,2),
-    idioma_origen character varying(10) COLLATE pg_catalog."default"
+    idioma_origen character varying(10) COLLATE pg_catalog."default",
+    flag_es_cierre_alarma boolean,
+    flag_hubo_captura boolean
 )
 
 TABLESPACE pg_default;

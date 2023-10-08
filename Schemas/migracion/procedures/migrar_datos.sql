@@ -609,6 +609,29 @@ BEGIN
     END;
 
 	BEGIN
+		v_cantidad_registros:= 0;
+		
+        SELECT COUNT(*) INTO v_cantidad_registros FROM migracion.migra_atencion_policiaca;
+
+        WITH new_atencion_policiaca AS (
+            SELECT p.* FROM public.atencion_policiaca p
+            WHERE p.atencion_policiaca_id NOT IN (SELECT atencion_policiaca_id FROM migracion.migra_atencion_policiaca)
+			and p.fecha_autoasignacion < now() - interval '32 days' 
+        )
+        INSERT INTO migracion.migra_atencion_policiaca SELECT * FROM new_atencion_policiaca;
+
+        SELECT COUNT(*) - v_cantidad_registros INTO v_cantidad_registros FROM migracion.migra_atencion_policiaca;
+
+        -- Registro de log de migraciones
+        INSERT INTO migracion.migra_log (nombre_tabla, registros_copiados, fecha_migracion)
+        VALUES ('atencion_policiaca', v_cantidad_registros, now());
+
+    EXCEPTION WHEN OTHERS THEN
+        RAISE WARNING 'Error migrando atencion_policiaca: %', SQLERRM;
+		ROLLBACK;
+    END;
+
+	BEGIN
 
 		DELETE FROM public.notificaciones_persona p WHERE p.notificacion_id IN (SELECT notificacion_id FROM migracion.migra_notificaciones_persona);
 		DELETE FROM public.calificadores_descripcion cd WHERE cd.calificacion_id IN (SELECT calificacion_id FROM migracion.migra_calificadores_descripcion);
@@ -618,10 +641,10 @@ BEGIN
 		DELETE FROM public.subscripciones p WHERE p.subscripcion_id IN (SELECT subscripcion_id FROM migracion.migra_subscripciones)	;
 		DELETE FROM public.ubicaciones_testing p WHERE p.ubicacion_id IN (SELECT ubicacion_id FROM migracion.migra_ubicaciones_testing);
 		DELETE FROM public.poderes_regalados p WHERE p.id_regalo IN (SELECT id_regalo FROM migracion.migra_poderes_regalados);
-		DELETE FROM public.aceptacion_condiciones p WHERE p.aceptacion_id IN (SELECT aceptacion_id FROM migracion.migra_aceptacion_condiciones);
 		DELETE FROM public.dispositivos p WHERE p.id_dispositivo IN (SELECT id_dispositivo FROM migracion.migra_dispositivos);
 		DELETE FROM public.permisos_pendientes_protegidos p WHERE p.permiso_pendiente_id IN (SELECT permiso_pendiente_id FROM migracion.migra_permisos_pendientes_protegidos); 
 		DELETE FROM public.transacciones_personas p WHERE p.transaccion_id IN (SELECT transaccion_id FROM migracion.migra_transacciones_personas);
+		DELETE FROM public.atencion_policiaca p WHERE p.atencion_policiaca_id IN (SELECT atencion_policiaca_id FROM migracion.migra_atencion_policiaca);
 
 	END;
 

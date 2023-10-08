@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS public.descripcionesalarmas
     ip_usuario_originador character varying(50) COLLATE pg_catalog."default",
     distancia_alarma_originador numeric(9,2),
     idioma_origen character varying(10) COLLATE pg_catalog."default",
+    flag_es_cierre_alarma boolean,
+    flag_hubo_captura boolean,
     CONSTRAINT pk_descripcionesalarmas PRIMARY KEY (iddescripcion),
     CONSTRAINT fk_descripc_reference_alarmas FOREIGN KEY (alarma_id)
         REFERENCES public.alarmas (alarma_id) MATCH SIMPLE

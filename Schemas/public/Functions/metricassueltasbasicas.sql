@@ -214,6 +214,42 @@ BEGIN
 	UNION ALL
 
 	SELECT 
+	cast('Capturas realizadas en un kilometro y medio a la redonda de mi ubicacion' as varchar (500)) as metrica,
+	count(distinct al.alarma_id)::BIGINT as cantidad
+	FROM alarmas al
+	inner join descripcionesalarmas dal 
+	ON dal.alarma_id = al.alarma_id AND dal.veracidadalarma IS NULL
+	inner join ubicaciones u
+	on (u."Tipo"='P')
+	inner join personas p
+	on (p.persona_id=u.persona_id)
+	inner join (
+		SELECT latitud, longitud
+		FROM ubicaciones u_user
+		WHERE u_user."Tipo" = 'P' 
+		AND u_user.persona_id = (
+			SELECT persona_id 
+			FROM personas 
+			WHERE user_id_thirdparty=user_id_thirdparty_in
+		)
+	) as user_location
+	on (
+		u.latitud 
+		BETWEEN user_location.latitud-0.013500
+		AND user_location.latitud+0.013500
+		AND 
+		u.longitud 
+		BETWEEN user_location.longitud-0.013500
+		AND user_location.longitud+0.013500
+	)
+	where p.user_id_thirdparty=user_id_thirdparty_in
+	and dal.Flag_hubo_captura is true
+	and fecha_alarma >= now() - interval '30 days'
+	group by 1
+
+	union all
+
+	SELECT 
 	cast('Cantidad de alarmas colocadas por mis protegidos' as varchar (500)) as metrica,
 	count(distinct al.alarma_id)::BIGINT as cantidad
 	FROM personas p

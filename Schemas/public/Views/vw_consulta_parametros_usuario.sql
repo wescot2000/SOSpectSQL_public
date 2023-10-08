@@ -22,8 +22,8 @@ CREATE OR REPLACE VIEW public.vw_consulta_parametros_usuario
         END AS flag_usuario_debe_firmar_cto,
     COALESCE(dis.idioma, 'en'::character varying) AS idioma_destino,
     dis.registrationid,
-    u.latitud,
-    u.longitud,
+    COALESCE(u.latitud, 4.656887) AS latitud,
+    COALESCE(u.longitud, '-74.093267'::numeric) AS longitud,
         CASE
             WHEN p.marca_bloqueo = 6 AND now() >= p.fecha_ultima_marca_bloqueo AND now() <= (p.fecha_ultima_marca_bloqueo + '60 days'::interval day) THEN p.fecha_ultima_marca_bloqueo + '60 days'::interval day
             WHEN p.marca_bloqueo = 9 AND now() >= p.fecha_ultima_marca_bloqueo AND now() <= (p.fecha_ultima_marca_bloqueo + '180 days'::interval day) THEN p.fecha_ultima_marca_bloqueo + '180 days'::interval day
@@ -34,7 +34,7 @@ CREATE OR REPLACE VIEW public.vw_consulta_parametros_usuario
            FROM obtener_radio_alarmas(p.user_id_thirdparty) obtener_radio_alarmas(radio_alarmas_id, radio_mts)) AS radio_alarmas_mts_actual,
     p.credibilidad_persona
    FROM personas p
-     JOIN ubicaciones u ON u.persona_id = p.persona_id AND u."Tipo"::text = 'P'::text
+     LEFT JOIN ubicaciones u ON u.persona_id = p.persona_id AND u."Tipo"::text = 'P'::text
      JOIN radio_alarmas ra ON ra.radio_alarmas_id = p.radio_alarmas_id
      LEFT JOIN alarmas al ON al.persona_id = p.persona_id AND al.estado_alarma IS NOT NULL AND al.calificacion_alarma IS NOT NULL AND al.calificacion_alarma < 6::numeric AND al.fecha_alarma > (now() - '1 day'::interval day)
      LEFT JOIN aceptacion_condiciones ac ON ac.persona_id = p.persona_id

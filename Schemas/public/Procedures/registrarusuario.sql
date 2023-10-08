@@ -59,6 +59,7 @@ BEGIN
 					,marca_bloqueo
 					,tiempo_refresco_mapa
 					,saldo_poderes
+					,Flag_es_policia
 				)
 		
 		VALUES 
@@ -70,6 +71,7 @@ BEGIN
 				,0
 				,v_tiempo_refresco_mapa
 				,v_poderes_regalo
+				,cast(false as boolean)
 			);
 		END IF;	
 		

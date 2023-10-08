@@ -4,6 +4,7 @@
 
 CREATE OR REPLACE VIEW public.vw_busca_alarmas_por_zona
  AS
+ WITH Prioridades AS (
  SELECT p.user_id_thirdparty,
     p.persona_id,
     alper.user_id_thirdparty AS user_id_creador_alarma,
@@ -24,7 +25,6 @@ CREATE OR REPLACE VIEW public.vw_busca_alarmas_por_zona
     60::smallint AS tiemporefrescoubicacion,
         CASE
             WHEN p.user_id_thirdparty::text = alper.user_id_thirdparty::text THEN true
-            WHEN al.alarma_id_padre IS NOT NULL THEN true
             ELSE false
         END AS flag_propietario_alarma,
     COALESCE((((verdaderos.cantidad_verdadero * 100)::numeric(18,2) / total.cantidad_total::numeric(18,2))::numeric(18,2) * (alper.credibilidad_persona / 100::numeric)::numeric(18,2))::numeric(5,2), 100.00) AS calificacion_actual_alarma,
@@ -37,8 +37,16 @@ CREATE OR REPLACE VIEW public.vw_busca_alarmas_por_zona
             WHEN dal.veracidadalarma = false THEN 'Negativo'::character varying(15)
             ELSE 'Apagado'::character varying(15)
         END AS calificacionalarmausuario,
+    case when al.estado_alarma is null then cast(true as boolean) else cast(false as boolean) end as EsAlarmaActiva,
     al.alarma_id_padre,
-    al.calificacion_alarma
+    al.calificacion_alarma,
+    case when al.estado_alarma is null then cast(true as boolean) else cast(false as boolean) end as estado_alarma,
+    coalesce(dal.Flag_hubo_captura,cast(false as boolean)) as Flag_hubo_captura,
+    case when  (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) > 0 then cast (true as boolean) else cast (false as boolean) end as flag_alarma_siendo_atendida,
+    (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) as cantidad_agentes_atendiendo,
+    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dal.veracidadalarma is null) as cantidad_interacciones,
+    p.flag_es_policia,
+    cast(3 as integer) AS prioridad
    FROM ubicaciones u
      JOIN personas p ON p.persona_id = u.persona_id AND u."Tipo"::text = 'P'::text
      JOIN radio_alarmas ra ON p.radio_alarmas_id = ra.radio_alarmas_id
@@ -83,7 +91,16 @@ CREATE OR REPLACE VIEW public.vw_busca_alarmas_por_zona
              LEFT JOIN descripcionesalarmas da ON al_1.alarma_id = da.alarma_id
           WHERE al_1.estado_alarma IS NULL
           GROUP BY al_1.alarma_id) total ON al.alarma_id = total.alarma_id
-  WHERE al.estado_alarma IS NULL AND p.user_id_thirdparty::text <> alper.user_id_thirdparty::text AND (al.tipoalarma_id <> ALL (ARRAY[4, 5, 6]))
+  WHERE   
+    (
+        al.estado_alarma IS NULL 
+    )
+    OR 
+    (
+        al.estado_alarma IS NOT NULL AND
+        al.fecha_alarma > NOW() - interval '90 minutes'
+    ) 
+    AND p.user_id_thirdparty::text <> alper.user_id_thirdparty::text AND (al.tipoalarma_id <> ALL (ARRAY[4, 5, 6]))
 UNION
  SELECT p.user_id_thirdparty,
     p.persona_id,
@@ -105,7 +122,6 @@ UNION
     60::smallint AS tiemporefrescoubicacion,
         CASE
             WHEN p.user_id_thirdparty::text = alper.user_id_thirdparty::text THEN true
-            WHEN al.alarma_id_padre IS NOT NULL THEN true
             ELSE false
         END AS flag_propietario_alarma,
     COALESCE((((verdaderos.cantidad_verdadero * 100)::numeric(18,2) / total.cantidad_total::numeric(18,2))::numeric(18,2) * (alper.credibilidad_persona / 100::numeric)::numeric(18,2))::numeric(5,2), 100.00) AS calificacion_actual_alarma,
@@ -118,8 +134,16 @@ UNION
             WHEN dal.veracidadalarma = false THEN 'Negativo'::character varying(15)
             ELSE 'Apagado'::character varying(15)
         END AS calificacionalarmausuario,
+    case when al.estado_alarma is null then cast(true as boolean) else cast(false as boolean) end as EsAlarmaActiva,
     al.alarma_id_padre,
-    al.calificacion_alarma
+    al.calificacion_alarma,
+    case when al.estado_alarma is null  then cast(true as boolean) else cast(false as boolean) end as estado_alarma,
+    coalesce(dal.Flag_hubo_captura,cast(false as boolean)) as Flag_hubo_captura,
+    case when  (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) > 0 then cast (true as boolean) else cast (false as boolean) end as flag_alarma_siendo_atendida,
+    (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) as cantidad_agentes_atendiendo,
+    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dal.veracidadalarma is null) as cantidad_interacciones,
+    p.flag_es_policia,
+    cast(4 as integer) AS prioridad
    FROM alarmas al
      JOIN ubicaciones u ON u.latitud >= (al.latitud - 0.090000) AND u.latitud <= (al.latitud + 0.090000) AND u.longitud >= (al.longitud - 0.090000) AND u.longitud <= (al.longitud + 0.090000) AND u."Tipo"::text = 'P'::text
      JOIN personas p ON p.persona_id = u.persona_id
@@ -145,7 +169,15 @@ UNION
              LEFT JOIN descripcionesalarmas da ON al_1.alarma_id = da.alarma_id
           WHERE al_1.estado_alarma IS NULL
           GROUP BY al_1.alarma_id) total ON al.alarma_id = total.alarma_id
-  WHERE al.estado_alarma IS NULL AND (al.tipoalarma_id = ANY (ARRAY[4, 5])) AND p.user_id_thirdparty::text <> alper.user_id_thirdparty::text
+  WHERE  (
+        al.estado_alarma IS NULL 
+    )
+    OR 
+    (
+        al.estado_alarma IS NOT NULL AND
+        al.fecha_alarma > NOW() - interval '90 minutes'
+    ) 
+   AND (al.tipoalarma_id = ANY (ARRAY[4, 5])) AND p.user_id_thirdparty::text <> alper.user_id_thirdparty::text
 UNION
  SELECT p.user_id_thirdparty,
     p.persona_id,
@@ -167,7 +199,6 @@ UNION
     60::smallint AS tiemporefrescoubicacion,
         CASE
             WHEN p.user_id_thirdparty::text = alper.user_id_thirdparty::text THEN true
-            WHEN al.alarma_id_padre IS NOT NULL THEN true
             ELSE false
         END AS flag_propietario_alarma,
     COALESCE((((verdaderos.cantidad_verdadero * 100)::numeric(18,2) / total.cantidad_total::numeric(18,2))::numeric(18,2) * (alper.credibilidad_persona / 100::numeric)::numeric(18,2))::numeric(5,2), 100.00) AS calificacion_actual_alarma,
@@ -180,8 +211,16 @@ UNION
             WHEN dal.veracidadalarma = false THEN 'Negativo'::character varying(15)
             ELSE 'Apagado'::character varying(15)
         END AS calificacionalarmausuario,
+    case when al.estado_alarma is null then cast(true as boolean) else cast(false as boolean) end as EsAlarmaActiva,
     al.alarma_id_padre,
-    al.calificacion_alarma
+    al.calificacion_alarma,
+    case when al.estado_alarma is null  then cast(true as boolean) else cast(false as boolean) end as estado_alarma,
+    coalesce(dal.Flag_hubo_captura,cast(false as boolean)) as Flag_hubo_captura,
+    case when  (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) > 0 then cast (true as boolean) else cast (false as boolean) end as flag_alarma_siendo_atendida,
+    (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) as cantidad_agentes_atendiendo,
+    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dal.veracidadalarma is null) as cantidad_interacciones,
+    p.flag_es_policia,
+    cast (5 as integer) AS prioridad
    FROM alarmas al
      JOIN ubicaciones u ON u.latitud >= (al.latitud - 0.009000) AND u.latitud <= (al.latitud + 0.009000) AND u.longitud >= (al.longitud - 0.009000) AND u.longitud <= (al.longitud + 0.009000) AND u."Tipo"::text = 'P'::text
      JOIN personas p ON p.persona_id = u.persona_id
@@ -207,7 +246,15 @@ UNION
              LEFT JOIN descripcionesalarmas da ON al_1.alarma_id = da.alarma_id
           WHERE al_1.estado_alarma IS NULL
           GROUP BY al_1.alarma_id) total ON al.alarma_id = total.alarma_id
-  WHERE al.estado_alarma IS NULL AND al.tipoalarma_id = 6 AND p.user_id_thirdparty::text <> alper.user_id_thirdparty::text
+  WHERE  (
+        al.estado_alarma IS NULL 
+    )
+    OR 
+    (
+        al.estado_alarma IS NOT NULL AND
+        al.fecha_alarma > NOW() - interval '90 minutes'
+    ) 
+   AND al.tipoalarma_id = 6 AND p.user_id_thirdparty::text <> alper.user_id_thirdparty::text
 UNION
  SELECT p.user_id_thirdparty,
     p.persona_id,
@@ -229,7 +276,6 @@ UNION
     60::smallint AS tiemporefrescoubicacion,
         CASE
             WHEN p.user_id_thirdparty::text = alper.user_id_thirdparty::text THEN true
-            WHEN al.alarma_id_padre IS NOT NULL THEN true
             ELSE false
         END AS flag_propietario_alarma,
     COALESCE((((verdaderos.cantidad_verdadero * 100)::numeric(18,2) / total.cantidad_total::numeric(18,2))::numeric(18,2) * (alper.credibilidad_persona / 100::numeric)::numeric(18,2))::numeric(5,2), 100.00) AS calificacion_actual_alarma,
@@ -242,8 +288,16 @@ UNION
             WHEN dal.veracidadalarma = false THEN 'Negativo'::character varying(15)
             ELSE 'Apagado'::character varying(15)
         END AS calificacionalarmausuario,
+    case when al.estado_alarma is null then cast(true as boolean) else cast(false as boolean) end as EsAlarmaActiva,
     al.alarma_id_padre,
-    al.calificacion_alarma
+    al.calificacion_alarma,
+    case when al.estado_alarma is null  then cast(true as boolean) else cast(false as boolean) end as estado_alarma,
+    coalesce(dal.Flag_hubo_captura,cast(false as boolean)) as Flag_hubo_captura,
+    case when  (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) > 0 then cast (true as boolean) else cast (false as boolean) end as flag_alarma_siendo_atendida,
+    (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) as cantidad_agentes_atendiendo,
+    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dal.veracidadalarma is null) as cantidad_interacciones,
+    p.flag_es_policia,
+    cast(6 as integer) AS prioridad
    FROM alarmas al
      JOIN ubicaciones u ON u.latitud >= (al.latitud - 9.000000) AND u.latitud <= (al.latitud + 9.000000) AND u.longitud >= (al.longitud - 9.000000) AND u.longitud <= (al.longitud + 9.000000) AND u."Tipo"::text = 'P'::text
      JOIN personas p ON p.persona_id = u.persona_id
@@ -269,7 +323,15 @@ UNION
              LEFT JOIN descripcionesalarmas da ON al_1.alarma_id = da.alarma_id
           WHERE al_1.estado_alarma IS NULL
           GROUP BY al_1.alarma_id) total ON al.alarma_id = total.alarma_id
-  WHERE al.estado_alarma IS NULL AND p.user_id_thirdparty::text = alper.user_id_thirdparty::text
+  WHERE  (
+        al.estado_alarma IS NULL 
+    )
+    OR 
+    (
+        al.estado_alarma IS NOT NULL AND
+        al.fecha_alarma > NOW() - interval '90 minutes'
+    ) 
+   AND p.user_id_thirdparty::text = alper.user_id_thirdparty::text
 UNION
  SELECT p.user_id_thirdparty,
     p.persona_id,
@@ -291,7 +353,6 @@ UNION
     60::smallint AS tiemporefrescoubicacion,
         CASE
             WHEN p.user_id_thirdparty::text = alper.user_id_thirdparty::text THEN true
-            WHEN al.alarma_id_padre IS NOT NULL THEN true
             ELSE false
         END AS flag_propietario_alarma,
     COALESCE((((verdaderos.cantidad_verdadero * 100)::numeric(18,2) / total.cantidad_total::numeric(18,2))::numeric(18,2) * (alper.credibilidad_persona / 100::numeric)::numeric(18,2))::numeric(5,2), 100.00) AS calificacion_actual_alarma,
@@ -304,8 +365,16 @@ UNION
             WHEN dal.veracidadalarma = false THEN 'Negativo'::character varying(15)
             ELSE 'Apagado'::character varying(15)
         END AS calificacionalarmausuario,
+    case when al.estado_alarma is null then cast(true as boolean) else cast(false as boolean) end as EsAlarmaActiva,
     al.alarma_id_padre,
-    al.calificacion_alarma
+    al.calificacion_alarma,
+    case when al.estado_alarma is null  then cast(true as boolean) else cast(false as boolean) end as estado_alarma,
+    coalesce(dal.Flag_hubo_captura,cast(false as boolean)) as Flag_hubo_captura,
+    case when  (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) > 0 then cast (true as boolean) else cast (false as boolean) end as flag_alarma_siendo_atendida,
+    (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) as cantidad_agentes_atendiendo,
+    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dal.veracidadalarma is null) as cantidad_interacciones,
+    p.flag_es_policia,
+    cast(1 as integer) AS prioridad
    FROM alarmas al
      JOIN relacion_protegidos rp ON al.persona_id = rp.id_persona_protegida AND now() >= rp.fecha_activacion AND now() <= COALESCE(rp.fecha_finalizacion, now()) AND (rp.fecha_suspension IS NULL AND rp.fecha_reactivacion IS NULL OR rp.fecha_suspension IS NULL AND rp.fecha_reactivacion <= now() OR rp.fecha_reactivacion IS NULL AND rp.fecha_suspension >= now() OR now() < rp.fecha_suspension OR now() > rp.fecha_reactivacion)
      JOIN tipoalarma ta ON ta.tipoalarma_id = al.tipoalarma_id
@@ -336,7 +405,15 @@ UNION
           WHERE al_1.estado_alarma IS NULL
           GROUP BY al_1.alarma_id) total ON al.alarma_id = total.alarma_id
      LEFT JOIN descripcionesalarmas dal ON dal.alarma_id = al.alarma_id AND dal.persona_id = p.persona_id AND dal.veracidadalarma IS NOT NULL
-  WHERE al.estado_alarma IS NULL AND (al.tipoalarma_id <> ALL (ARRAY[4, 5, 6])) AND p.user_id_thirdparty::text <> alper.user_id_thirdparty::text
+  WHERE  (
+        al.estado_alarma IS NULL 
+    )
+    OR 
+    (
+        al.estado_alarma IS NOT NULL AND
+        al.fecha_alarma > NOW() - interval '90 minutes'
+    ) 
+   AND (al.tipoalarma_id <> ALL (ARRAY[4, 5, 6])) AND p.user_id_thirdparty::text <> alper.user_id_thirdparty::text
 UNION
  SELECT p.user_id_thirdparty,
     p.persona_id,
@@ -358,7 +435,6 @@ UNION
     60::smallint AS tiemporefrescoubicacion,
         CASE
             WHEN p.user_id_thirdparty::text = alper.user_id_thirdparty::text THEN true
-            WHEN al.alarma_id_padre IS NOT NULL THEN true
             ELSE false
         END AS flag_propietario_alarma,
     COALESCE((((verdaderos.cantidad_verdadero * 100)::numeric(18,2) / total.cantidad_total::numeric(18,2))::numeric(18,2) * (alper.credibilidad_persona / 100::numeric)::numeric(18,2))::numeric(5,2), 100.00) AS calificacion_actual_alarma,
@@ -371,10 +447,18 @@ UNION
             WHEN dal.veracidadalarma = false THEN 'Negativo'::character varying(15)
             ELSE 'Apagado'::character varying(15)
         END AS calificacionalarmausuario,
+    case when al.estado_alarma is null then cast(true as boolean) else cast(false as boolean) end as EsAlarmaActiva,
     al.alarma_id_padre,
-    al.calificacion_alarma
+    al.calificacion_alarma,
+    case when al.estado_alarma is null  then cast(true as boolean) else cast(false as boolean) end as estado_alarma,
+    coalesce(dal.Flag_hubo_captura,cast(false as boolean)) as Flag_hubo_captura,
+    case when  (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) > 0 then cast (true as boolean) else cast (false as boolean) end as flag_alarma_siendo_atendida,
+    (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) as cantidad_agentes_atendiendo,
+    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dal.veracidadalarma is null) as cantidad_interacciones,
+    p.flag_es_policia,
+    cast(2 as integer) AS prioridad
    FROM alarmas al
-     JOIN ubicaciones u ON u.latitud >= (al.latitud - 0.001800) AND u.latitud <= (al.latitud + 0.001800) AND u.longitud >= (al.longitud - 0.001800) AND u.longitud <= (al.longitud + 0.001800) AND u."Tipo"::text = 'S'::text
+     JOIN ubicaciones u ON u.latitud >= (al.latitud - 0.002700) AND u.latitud <= (al.latitud + 0.002700) AND u.longitud >= (al.longitud - 0.002700) AND u.longitud <= (al.longitud + 0.002700) AND u."Tipo"::text = 'S'::text
      JOIN personas p ON p.persona_id = u.persona_id
      JOIN subscripciones s ON u.ubicacion_id = s.ubicacion_id AND u."Tipo"::text = 'S'::text AND now() >= s.fecha_activacion AND now() <= COALESCE(s.fecha_finalizacion, now())
      JOIN tipoalarma ta ON ta.tipoalarma_id = al.tipoalarma_id
@@ -400,8 +484,23 @@ UNION
           WHERE al_1.estado_alarma IS NULL
           GROUP BY al_1.alarma_id) total ON al.alarma_id = total.alarma_id
      LEFT JOIN descripcionesalarmas dal ON dal.alarma_id = al.alarma_id AND dal.persona_id = p.persona_id AND dal.veracidadalarma IS NOT NULL
-  WHERE al.estado_alarma IS NULL AND (al.tipoalarma_id <> ALL (ARRAY[4, 5, 6])) AND p.user_id_thirdparty::text <> alper.user_id_thirdparty::text;
+  WHERE  (
+        al.estado_alarma IS NULL 
+    )
+    OR 
+    (
+        al.estado_alarma IS NOT NULL AND
+        al.fecha_alarma > NOW() - interval '90 minutes'
+    ) 
+   AND (al.tipoalarma_id <> ALL (ARRAY[4, 5, 6])) AND p.user_id_thirdparty::text <> alper.user_id_thirdparty::text
+ )
+ SELECT 
+    *
+FROM Prioridades
+WHERE (user_id_thirdparty,alarma_id, prioridad) IN (
+    SELECT user_id_thirdparty,alarma_id, MIN(prioridad)
+    FROM Prioridades
+    GROUP BY user_id_thirdparty,alarma_id);
 
 ALTER TABLE public.vw_busca_alarmas_por_zona
     OWNER TO w4ll4c3;
-

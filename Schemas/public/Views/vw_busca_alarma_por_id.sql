@@ -40,7 +40,13 @@ CREATE OR REPLACE VIEW public.vw_busca_alarma_por_id
             WHEN al.estado_alarma IS NULL THEN true
             ELSE false
         END AS esalarmaactiva,
-    al.calificacion_alarma
+    al.calificacion_alarma,
+    case when al.estado_alarma is null  then cast(true as boolean) else cast(false as boolean) end as estado_alarma,
+    coalesce(dal.Flag_hubo_captura,cast(false as boolean)) as Flag_hubo_captura,
+    case when  (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) > 0 then cast (true as boolean) else cast (false as boolean) end as flag_alarma_siendo_atendida,
+    (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) as cantidad_agentes_atendiendo,
+    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dal.veracidadalarma is null) as cantidad_interacciones,
+    p.flag_es_policia
    FROM alarmas al
      JOIN personas p ON p.persona_id = al.persona_id
      JOIN personas alper ON alper.persona_id = al.persona_id

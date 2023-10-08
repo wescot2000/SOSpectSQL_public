@@ -4,21 +4,8 @@
 
 CREATE OR REPLACE VIEW public.vw_notificacion_alarmas
  AS
- SELECT t.user_id_thirdparty,
-    t.persona_id,
-    t.latitud_alarma,
-    t.longitud_alarma,
-    t.user_id_creador_alarma,
-    t.alarma_id,
-    t.idioma AS idioma_destino,
-    t.tipo_subscr_activa_usuario,
-        CASE
-            WHEN t.tipo_subscr_activa_usuario::text = 'Alarmas generadas por mi circulo social'::text THEN ((((((((('URGENTE! Tu PROTEGIDO '::text || t.login_usuario_protegido::text) || ' acaba de lanzar una alarma de tipo: '::text) || t.descripciontipoalarma::text) || ' a '::text) || ceiling(abs((t.latitud_alarma - t.latitud_usuario_notificar + (t.longitud_alarma - t.longitud_usuario_notificar) * 100::numeric) / 0.000900))) || ' metros de donde estas ubicado. Revisa la alarma para verificar de que se trata. Veracidad: '::text) || t.credibilidad_alarma) || ' por ciento.'::text))::character varying(250)
-            WHEN t.tipo_subscr_activa_usuario::text = 'Zona de vigilancia adicional'::text THEN ((((((('IMPORTANTE! Alguien acaba de lanzar una alarma en una de las ZONAS de interés, alerta de tipo: '::text || t.descripciontipoalarma::text) || ' a '::text) || ceiling(abs((t.latitud_alarma - t.latitud_usuario_notificar + (t.longitud_alarma - t.longitud_usuario_notificar) * 100::numeric) / 0.000900))) || ' metros de la zona que deseas monitorear. Revisa la alarma para verificar de que se trata. Veracidad: '::text) || t.credibilidad_alarma) || ' por ciento.'::text))::character varying(250)
-            ELSE ((((((('Alguien acaba de lanzar una alarma cerca de ti, alerta de tipo: '::text || t.descripciontipoalarma::text) || ' a '::text) || ceiling(abs((t.latitud_alarma - t.latitud_usuario_notificar + (t.longitud_alarma - t.longitud_usuario_notificar) * 100::numeric) / 0.000900))) || ' metros de donde estas ubicado. Revisa la alarma para verificar de que se trata. Veracidad: '::text) || t.credibilidad_alarma) || ' por ciento.'::text))::character varying(250)
-        END AS txt_notif,
-    t.tipoalarma_id
-   FROM ( SELECT p.user_id_thirdparty,
+   WITH Prioridades AS 
+      ( SELECT p.user_id_thirdparty,
             p.persona_id,
             alper.user_id_thirdparty AS user_id_creador_alarma,
             p.login AS login_usuario_notificar,
@@ -38,7 +25,8 @@ CREATE OR REPLACE VIEW public.vw_notificacion_alarmas
             al.calificacion_alarma AS credibilidad_alarma,
             EXTRACT(epoch FROM now() - al.fecha_alarma) / 60::numeric AS minutos_desde_reportada,
             dis.idioma,
-            ta.tipoalarma_id
+            ta.tipoalarma_id,
+            cast(3 as integer) AS prioridad
            FROM ubicaciones u
              JOIN personas p ON p.persona_id = u.persona_id AND u."Tipo"::text = 'P'::text
              JOIN radio_alarmas ra ON p.radio_alarmas_id = ra.radio_alarmas_id
@@ -88,7 +76,8 @@ CREATE OR REPLACE VIEW public.vw_notificacion_alarmas
             al.calificacion_alarma AS credibilidad_alarma,
             EXTRACT(epoch FROM now() - al.fecha_alarma) / 60::numeric AS minutos_desde_reportada,
             dis.idioma,
-            ta.tipoalarma_id
+            ta.tipoalarma_id,
+            cast(2 as integer) AS prioridad
            FROM alarmas al
              JOIN ubicaciones u ON u.latitud >= (al.latitud - 0.001800) AND u.latitud <= (al.latitud + 0.001800) AND u.longitud >= (al.longitud - 0.001800) AND u.longitud <= (al.longitud + 0.001800) AND u."Tipo"::text = 'S'::text
              JOIN personas p ON p.persona_id = u.persona_id
@@ -120,7 +109,8 @@ CREATE OR REPLACE VIEW public.vw_notificacion_alarmas
             al.calificacion_alarma AS credibilidad_alarma,
             EXTRACT(epoch FROM now() - al.fecha_alarma) / 60::numeric AS minutos_desde_reportada,
             dis.idioma,
-            ta.tipoalarma_id
+            ta.tipoalarma_id,
+            cast(3 as integer) AS prioridad
            FROM alarmas al
              JOIN ubicaciones u ON u.latitud >= (al.latitud - 0.090000) AND u.latitud <= (al.latitud + 0.090000) AND u.longitud >= (al.longitud - 0.090000) AND u.longitud <= (al.longitud + 0.090000) AND u."Tipo"::text = 'P'::text
              JOIN personas p ON p.persona_id = u.persona_id
@@ -150,7 +140,8 @@ CREATE OR REPLACE VIEW public.vw_notificacion_alarmas
             al.calificacion_alarma AS credibilidad_alarma,
             EXTRACT(epoch FROM now() - al.fecha_alarma) / 60::numeric AS minutos_desde_reportada,
             dis.idioma,
-            ta.tipoalarma_id
+            ta.tipoalarma_id,
+            cast(3 as integer) AS prioridad
            FROM alarmas al
              JOIN ubicaciones u ON u.latitud >= (al.latitud - 0.009000) AND u.latitud <= (al.latitud + 0.009000) AND u.longitud >= (al.longitud - 0.009000) AND u.longitud <= (al.longitud + 0.009000) AND u."Tipo"::text = 'P'::text
              JOIN personas p ON p.persona_id = u.persona_id
@@ -180,7 +171,8 @@ CREATE OR REPLACE VIEW public.vw_notificacion_alarmas
             al.calificacion_alarma AS credibilidad_alarma,
             EXTRACT(epoch FROM now() - al.fecha_alarma) / 60::numeric AS minutos_desde_reportada,
             dis.idioma,
-            ta.tipoalarma_id
+            ta.tipoalarma_id,
+            cast(3 as integer) AS prioridad
            FROM alarmas al
              JOIN ubicaciones u ON u.latitud >= (al.latitud - 9.000000) AND u.latitud <= (al.latitud + 9.000000) AND u.longitud >= (al.longitud - 9.000000) AND u.longitud <= (al.longitud + 9.000000) AND u."Tipo"::text = 'P'::text
              JOIN personas p ON p.persona_id = u.persona_id
@@ -210,7 +202,8 @@ CREATE OR REPLACE VIEW public.vw_notificacion_alarmas
             al.calificacion_alarma AS credibilidad_alarma,
             EXTRACT(epoch FROM now() - al.fecha_alarma) / 60::numeric AS minutos_desde_reportada,
             dis.idioma,
-            ta.tipoalarma_id
+            ta.tipoalarma_id,
+            cast(1 as integer) AS prioridad
            FROM alarmas al
              JOIN relacion_protegidos rp ON al.persona_id = rp.id_persona_protegida AND now() >= rp.fecha_activacion AND now() <= COALESCE(rp.fecha_finalizacion, now()) AND (rp.fecha_suspension IS NULL AND rp.fecha_reactivacion IS NULL OR rp.fecha_suspension IS NULL AND rp.fecha_reactivacion <= now() OR rp.fecha_reactivacion IS NULL AND rp.fecha_suspension >= now() OR now() < rp.fecha_suspension OR now() > rp.fecha_reactivacion)
              JOIN tipoalarma ta ON ta.tipoalarma_id = al.tipoalarma_id
@@ -222,7 +215,28 @@ CREATE OR REPLACE VIEW public.vw_notificacion_alarmas
              LEFT JOIN tiposubscripcion ts ON ts.tipo_subscr_id = s.tipo_subscr_id
              JOIN ubicaciones u ON u.persona_id = p.persona_id AND u."Tipo"::text = 'P'::text
              JOIN dispositivos dis ON dis.persona_id = p.persona_id AND dis.fecha_fin IS NULL
-          WHERE al.estado_alarma IS NULL AND p.user_id_thirdparty::text <> alper.user_id_thirdparty::text) t;
+          WHERE al.estado_alarma IS NULL AND p.user_id_thirdparty::text <> alper.user_id_thirdparty::text
+          ) 
+
+ SELECT t.user_id_thirdparty,
+    t.persona_id,
+    t.latitud_alarma,
+    t.longitud_alarma,
+    t.user_id_creador_alarma,
+    t.alarma_id,
+    t.idioma AS idioma_destino,
+    t.tipo_subscr_activa_usuario,
+        CASE
+            WHEN t.tipo_subscr_activa_usuario::text = 'Alarmas generadas por mi circulo social'::text THEN ((((((((('URGENTE! Tu PROTEGIDO '::text || t.login_usuario_protegido::text) || ' acaba de lanzar una alarma de tipo: '::text) || t.descripciontipoalarma::text) || ' a '::text) || ceiling(abs((t.latitud_alarma - t.latitud_usuario_notificar + (t.longitud_alarma - t.longitud_usuario_notificar) * 100::numeric) / 0.000900))) || ' metros de donde estas ubicado. Revisa la alarma para verificar de que se trata. Veracidad: '::text) || t.credibilidad_alarma) || ' por ciento.'::text))::character varying(250)
+            WHEN t.tipo_subscr_activa_usuario::text = 'Zona de vigilancia adicional'::text THEN ((((((('IMPORTANTE! Alguien acaba de lanzar una alarma en una de las ZONAS de interés, alerta de tipo: '::text || t.descripciontipoalarma::text) || ' a '::text) || ceiling(abs((t.latitud_alarma - t.latitud_usuario_notificar + (t.longitud_alarma - t.longitud_usuario_notificar) * 100::numeric) / 0.000900))) || ' metros de la zona que deseas monitorear. Revisa la alarma para verificar de que se trata. Veracidad: '::text) || t.credibilidad_alarma) || ' por ciento.'::text))::character varying(250)
+            ELSE ((((((('Alguien acaba de lanzar una alarma cerca de ti, alerta de tipo: '::text || t.descripciontipoalarma::text) || ' a '::text) || ceiling(abs((t.latitud_alarma - t.latitud_usuario_notificar + (t.longitud_alarma - t.longitud_usuario_notificar) * 100::numeric) / 0.000900))) || ' metros de donde estas ubicado. Revisa la alarma para verificar de que se trata. Veracidad: '::text) || t.credibilidad_alarma) || ' por ciento.'::text))::character varying(250)
+        END AS txt_notif,
+    t.tipoalarma_id
+   FROM Prioridades t
+   WHERE (t.alarma_id, t.prioridad) IN (
+    SELECT p.alarma_id, MIN(p.prioridad)
+    FROM Prioridades p
+    GROUP BY p.alarma_id);
 
 ALTER TABLE public.vw_notificacion_alarmas
     OWNER TO w4ll4c3;

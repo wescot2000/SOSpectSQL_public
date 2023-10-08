@@ -24,7 +24,6 @@ CREATE OR REPLACE VIEW public.vw_busca_alarmas_por_zona2
     60::smallint AS tiemporefrescoubicacion,
         CASE
             WHEN p.user_id_thirdparty::text = alper.user_id_thirdparty::text THEN true
-            WHEN al.alarma_id_padre IS NOT NULL THEN true
             ELSE false
         END AS flag_propietario_alarma,
     COALESCE((((verdaderos.cantidad_verdadero * 100)::numeric(18,2) / total.cantidad_total::numeric(18,2))::numeric(18,2) * (alper.credibilidad_persona / 100::numeric)::numeric(18,2))::numeric(5,2), 100.00) AS calificacion_actual_alarma,
@@ -37,8 +36,15 @@ CREATE OR REPLACE VIEW public.vw_busca_alarmas_por_zona2
             WHEN dal.veracidadalarma = false THEN 'Negativo'::character varying(15)
             ELSE 'Apagado'::character varying(15)
         END AS calificacionalarmausuario,
+    case when al.estado_alarma is null then cast(true as boolean) else cast(false as boolean) end as EsAlarmaActiva,
     al.alarma_id_padre,
-    al.calificacion_alarma
+    al.calificacion_alarma,
+    case when al.estado_alarma is null  then cast(true as boolean) else cast(false as boolean) end as estado_alarma,
+    coalesce(dal.Flag_hubo_captura,cast(false as boolean)) as Flag_hubo_captura,
+    case when  (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) > 0 then cast (true as boolean) else cast (false as boolean) end as flag_alarma_siendo_atendida,
+    (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) as cantidad_agentes_atendiendo,
+    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dal.veracidadalarma is null) as cantidad_interacciones,
+    p.flag_es_policia
    FROM ubicaciones u
      JOIN personas p ON p.persona_id = u.persona_id AND u."Tipo"::text = 'P'::text
      JOIN radio_alarmas ra ON ra.radio_alarmas_id = 310
@@ -64,7 +70,15 @@ CREATE OR REPLACE VIEW public.vw_busca_alarmas_por_zona2
              LEFT JOIN descripcionesalarmas da ON al_1.alarma_id = da.alarma_id
           WHERE al_1.estado_alarma IS NULL
           GROUP BY al_1.alarma_id) total ON al.alarma_id = total.alarma_id
-  WHERE al.estado_alarma IS NULL;
+  WHERE 
+    (
+        al.estado_alarma IS NULL 
+    )
+    OR 
+    (
+        al.estado_alarma IS NOT NULL AND
+        al.fecha_alarma > NOW() - interval '90 minutes'
+    );
 
 ALTER TABLE public.vw_busca_alarmas_por_zona2
     OWNER TO w4ll4c3;

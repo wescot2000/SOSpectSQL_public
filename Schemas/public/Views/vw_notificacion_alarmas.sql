@@ -233,10 +233,10 @@ CREATE OR REPLACE VIEW public.vw_notificacion_alarmas
         END AS txt_notif,
     t.tipoalarma_id
    FROM Prioridades t
-   WHERE (t.alarma_id, t.prioridad) IN (
-    SELECT p.alarma_id, MIN(p.prioridad)
+   WHERE (t.alarma_id, t.user_id_thirdparty, t.prioridad) IN (
+    SELECT p.alarma_id, p.user_id_thirdparty, MIN(p.prioridad)
     FROM Prioridades p
-    GROUP BY p.alarma_id);
+    GROUP BY p.alarma_id,p.user_id_thirdparty);
 
 ALTER TABLE public.vw_notificacion_alarmas
     OWNER TO w4ll4c3;

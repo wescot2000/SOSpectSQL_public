@@ -78,5 +78,3 @@ BEGIN
 	END;
 END
 $BODY$;
-ALTER PROCEDURE public.cancelarsubscripcion(bigint, character varying)
-    OWNER TO w4ll4c3;

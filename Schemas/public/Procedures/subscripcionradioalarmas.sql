@@ -186,5 +186,3 @@ BEGIN
 	END;
 END
 $BODY$;
-ALTER PROCEDURE public.subscripcionradioalarmas(character varying, integer)
-    OWNER TO w4ll4c3;

@@ -89,5 +89,3 @@ BEGIN
 	
 END
 $BODY$;
-ALTER PROCEDURE public.insertaalarma(character varying, integer, numeric, numeric, character varying, bigint)
-    OWNER TO w4ll4c3;

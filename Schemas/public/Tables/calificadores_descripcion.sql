@@ -21,6 +21,3 @@ CREATE TABLE IF NOT EXISTS public.calificadores_descripcion
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.calificadores_descripcion
-    OWNER to w4ll4c3;

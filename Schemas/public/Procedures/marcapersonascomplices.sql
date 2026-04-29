@@ -89,5 +89,3 @@ BEGIN
 		
 END
 $BODY$;
-ALTER PROCEDURE public.marcapersonascomplices()
-    OWNER TO w4ll4c3;

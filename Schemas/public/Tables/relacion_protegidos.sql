@@ -30,8 +30,6 @@ CREATE TABLE IF NOT EXISTS public.relacion_protegidos
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.relacion_protegidos
-    OWNER to w4ll4c3;
 -- Index: idx_relacion_protegidos_fecha_finalizacion
 
 -- DROP INDEX IF EXISTS public.idx_relacion_protegidos_fecha_finalizacion;

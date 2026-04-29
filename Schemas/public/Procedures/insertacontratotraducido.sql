@@ -14,14 +14,14 @@ DECLARE
 BEGIN
 	BEGIN
 
-		SELECT 
+		SELECT
 				contrato_id
-			INTO 
+			INTO
 				v_contrato_id
-		FROM 
+		FROM
 			condiciones_servicio cs
 		WHERE
-			cast(now() as timestamp with time zone) between cs.fecha_inicio_version and coalesce(cs.fecha_fin_version,cast(now() as timestamp with time zone));
+			cs.fecha_fin_version IS NULL;
 
 		
 		if 
@@ -30,20 +30,15 @@ BEGIN
 			RAISE EXCEPTION 'El texto de contrato llego vacío tras la traduccion. No se puede insertar un valor nulo de texto de contrato, se debe mostrar en ingles';
 		END IF;
 
-		select 
+		select
 			count(*)
 		INTO
 			v_traduccion_existente
-		from 
-			condiciones_servicio cs
-		inner join 
+		from
 			traducciones_contrato tc
-		on 
-			(tc.contrato_id=cs.contrato_id 
-			and tc.fecha_traduccion 
-				between cs.fecha_inicio_version 
-				and coalesce(cs.fecha_fin_version,cast(now() as timestamp with time zone)) 
-			and tc.idioma=p_idioma_dispositivo);
+		WHERE
+			tc.contrato_id = v_contrato_id
+			AND tc.idioma = p_idioma_dispositivo;
 
 		if 
 			v_traduccion_existente>0
@@ -74,5 +69,3 @@ BEGIN
 	END;
 END
 $BODY$;
-ALTER PROCEDURE public.insertacontratotraducido(character varying, character varying)
-    OWNER TO w4ll4c3;

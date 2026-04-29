@@ -29,6 +29,3 @@ CREATE TABLE IF NOT EXISTS public.permisos_pendientes_protegidos
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.permisos_pendientes_protegidos
-    OWNER to w4ll4c3;

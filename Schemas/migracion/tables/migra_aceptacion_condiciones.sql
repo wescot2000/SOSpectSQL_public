@@ -13,6 +13,3 @@ CREATE TABLE IF NOT EXISTS migracion.migra_aceptacion_condiciones
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS migracion.migra_aceptacion_condiciones
-    OWNER to w4ll4c3;

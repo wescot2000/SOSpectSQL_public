@@ -179,9 +179,16 @@ BEGIN
 
 	UNION ALL
 
-	SELECT 
+	SELECT
 	cast('Promedio de tiempo en minutos entre lanzamiento de alarma en mi zona y la primera calificacion o descripcion' as varchar (500)) as metrica,
-	(EXTRACT(EPOCH FROM AVG(da.fechadescripcion - al.fecha_alarma))/60)::BIGINT as cantidad
+	COALESCE(
+		(EXTRACT(EPOCH FROM AVG(
+			CASE WHEN da.fechadescripcion > al.fecha_alarma
+				 THEN da.fechadescripcion - al.fecha_alarma
+				 ELSE NULL
+			END
+		))/60)::BIGINT
+	, 0) as cantidad
 	FROM alarmas al
 	INNER JOIN descripcionesalarmas da
 	ON (da.alarma_id=al.alarma_id)
@@ -319,5 +326,3 @@ BEGIN
 END; 
 $BODY$;
 
-ALTER FUNCTION public.metricassueltasbasicas(text)
-    OWNER TO w4ll4c3;

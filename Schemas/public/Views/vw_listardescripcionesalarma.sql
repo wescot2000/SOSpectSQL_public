@@ -23,7 +23,8 @@ CREATE OR REPLACE VIEW public.vw_listardescripcionesalarma
         CASE
             WHEN al.estado_alarma IS NULL THEN true
             ELSE false
-        END AS esalarmaactiva
+        END AS esalarmaactiva,
+    coalesce(pp.flag_red_confianza, cast(FALSE as boolean)) as flag_red_confianza
    FROM descripcionesalarmas da
      JOIN alarmas al ON al.alarma_id = da.alarma_id
      JOIN tipoalarma ta ON ta.tipoalarma_id = al.tipoalarma_id
@@ -33,6 +34,4 @@ CREATE OR REPLACE VIEW public.vw_listardescripcionesalarma
   WHERE da.veracidadalarma IS NULL
   ORDER BY da.fechadescripcion;
 
-ALTER TABLE public.vw_listardescripcionesalarma
-    OWNER TO w4ll4c3;
 

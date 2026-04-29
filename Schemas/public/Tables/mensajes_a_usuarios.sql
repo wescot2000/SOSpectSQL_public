@@ -16,6 +16,11 @@ CREATE TABLE IF NOT EXISTS public.mensajes_a_usuarios
     fecha_traduccion timestamp with time zone,
     asunto_traducido character varying(500) COLLATE pg_catalog."default",
     alarma_id bigint,
+    tipoalarma_id integer,
+    descripcion_alarma character varying(500) COLLATE pg_catalog."default",
+    url_foto character varying(500) COLLATE pg_catalog."default",
+    distancia_metros integer,
+    url_logo character varying(500) COLLATE pg_catalog."default",
     CONSTRAINT pk_mensajes_a_usuarios2 PRIMARY KEY (mensaje_id),
     CONSTRAINT fk_mensajes_a_alarmas FOREIGN KEY (alarma_id)
         REFERENCES public.alarmas (alarma_id) MATCH SIMPLE
@@ -29,6 +34,3 @@ CREATE TABLE IF NOT EXISTS public.mensajes_a_usuarios
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.mensajes_a_usuarios
-    OWNER to w4ll4c3;

@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS public.dispositivos
     idioma character varying(10) COLLATE pg_catalog."default" NOT NULL,
     fecha_inicio timestamp with time zone,
     fecha_fin timestamp with time zone,
+    pais_id character varying(3) COLLATE pg_catalog."default",
     CONSTRAINT pk_dispositivos PRIMARY KEY (id_dispositivo),
     CONSTRAINT fk_dispositivos_reference_personas FOREIGN KEY (persona_id)
         REFERENCES public.personas (persona_id) MATCH SIMPLE
@@ -19,6 +20,3 @@ CREATE TABLE IF NOT EXISTS public.dispositivos
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.dispositivos
-    OWNER to w4ll4c3;

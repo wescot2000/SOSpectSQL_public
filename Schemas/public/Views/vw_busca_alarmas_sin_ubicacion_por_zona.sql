@@ -14,8 +14,6 @@ CREATE OR REPLACE VIEW public.vw_busca_alarmas_sin_ubicacion_por_zona
    FROM radio_alarmas ra,
     alarmas al
      JOIN tipoalarma ta ON ta.tipoalarma_id = al.tipoalarma_id
-  WHERE ra.radio_alarmas_id = 5 AND al.estado_alarma IS NULL;
+  WHERE ra.radio_alarmas_id = 14 AND al.estado_alarma IS NULL;
 
-ALTER TABLE public.vw_busca_alarmas_sin_ubicacion_por_zona
-    OWNER TO w4ll4c3;
 

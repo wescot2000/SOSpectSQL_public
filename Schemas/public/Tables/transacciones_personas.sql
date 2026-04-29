@@ -19,6 +19,3 @@ CREATE TABLE IF NOT EXISTS public.transacciones_personas
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.transacciones_personas
-    OWNER to w4ll4c3;

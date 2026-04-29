@@ -32,5 +32,3 @@ BEGIN
 	END;
 END
 $BODY$;
-ALTER PROCEDURE public.enviarmensaje(character varying, character varying)
-    OWNER TO w4ll4c3;

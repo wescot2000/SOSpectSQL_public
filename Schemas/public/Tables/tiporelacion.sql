@@ -10,6 +10,3 @@ CREATE TABLE IF NOT EXISTS public.tiporelacion
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.tiporelacion
-    OWNER to w4ll4c3;

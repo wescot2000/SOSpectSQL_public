@@ -22,6 +22,8 @@ CREATE TABLE IF NOT EXISTS public.descripcionesalarmas
     idioma_origen character varying(10) COLLATE pg_catalog."default",
     flag_es_cierre_alarma boolean,
     flag_hubo_captura boolean,
+    flag_persona_encontrada boolean,
+    flag_mascota_recuperada boolean,
     CONSTRAINT pk_descripcionesalarmas PRIMARY KEY (iddescripcion),
     CONSTRAINT fk_descripc_reference_alarmas FOREIGN KEY (alarma_id)
         REFERENCES public.alarmas (alarma_id) MATCH SIMPLE
@@ -35,5 +37,28 @@ CREATE TABLE IF NOT EXISTS public.descripcionesalarmas
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.descripcionesalarmas
-    OWNER to w4ll4c3;
+
+-- Comentarios (Actualizado 14-01-2026)
+COMMENT ON TABLE public.descripcionesalarmas IS
+'Descripciones de alarmas. Para alarmas promocionales, EXACTAMENTE UNA descripción por alarma. Los campos forenses son obligatorios para auditoría legal.';
+
+COMMENT ON COLUMN public.descripcionesalarmas.idioma_origen IS
+'Idioma del dispositivo del usuario que creó la descripción. Capturado desde CultureInfo.CurrentCulture.TwoLetterISOLanguageName. Usado para traducción automática: API detecta cuando idioma_origen ≠ idioma_destino. Agregado: 12-01-2026 (Manual 0712-21).';
+
+COMMENT ON COLUMN public.descripcionesalarmas.ip_usuario_originador IS
+'Dirección IP del usuario que creó la descripción. Capturado desde HttpContext.Connection.RemoteIpAddress. PROPÓSITO FORENSE: Investigaciones gubernamentales, detección de spam. Agregado: 12-01-2026 (Manual 0712-21).';
+
+COMMENT ON COLUMN public.descripcionesalarmas.latitud_originador IS
+'Latitud GPS del usuario al momento de crear la descripción. Usado junto con alarmas.latitud para calcular distancia_alarma_originador. ANTI-FRAUDE: Detectar sabotaje empresarial o spam desde ubicaciones remotas. Agregado: 12-01-2026 (Manual 0712-21).';
+
+COMMENT ON COLUMN public.descripcionesalarmas.longitud_originador IS
+'Longitud GPS del usuario al momento de crear la descripción. Usado junto con alarmas.longitud para calcular distancia_alarma_originador. ANTI-FRAUDE: Detectar sabotaje empresarial o spam desde ubicaciones remotas. Agregado: 12-01-2026 (Manual 0712-21).';
+
+COMMENT ON COLUMN public.descripcionesalarmas.distancia_alarma_originador IS
+'Distancia en kilómetros entre la ubicación del usuario (latitud_originador, longitud_originador) y la ubicación de la alarma (alarmas.latitud, alarmas.longitud). Calculado con fórmula Haversine. ANTI-FRAUDE: Caso fraudulento = usuario en Bogotá creando publicidad negativa para restaurante en Medellín (distancia > 200km). Caso legítimo = usuario a 2km de su negocio. REGLA DE NEGOCIO: Si distancia > 5km, marcar para revisión manual. Si distancia > 50km, auto-bloquear (posible spam internacional). Agregado: 12-01-2026 (Manual 0712-21).';
+
+COMMENT ON COLUMN public.descripcionesalarmas.flag_persona_encontrada IS
+'Indica si la persona perdida fue encontrada al momento del cierre de alarma. Solo aplica para tipo_cierre=cierre_persona (tipoalarma_id=5). Agregado: 06-02-2026.';
+
+COMMENT ON COLUMN public.descripcionesalarmas.flag_mascota_recuperada IS
+'Indica si la mascota perdida fue recuperada al momento del cierre de alarma. Solo aplica para tipo_cierre=cierre_mascota (tipoalarma_id=4). Agregado: 06-02-2026.';

@@ -12,6 +12,3 @@ CREATE TABLE IF NOT EXISTS migracion.migra_valorsubscripciones
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS migracion.migra_valorsubscripciones
-    OWNER to w4ll4c3;

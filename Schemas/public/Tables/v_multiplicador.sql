@@ -9,6 +9,3 @@ CREATE TABLE IF NOT EXISTS public.v_multiplicador
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.v_multiplicador
-    OWNER to w4ll4c3;

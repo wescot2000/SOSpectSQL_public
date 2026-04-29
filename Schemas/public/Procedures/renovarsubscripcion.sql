@@ -97,5 +97,3 @@ BEGIN
 	END;
 END
 $BODY$;
-ALTER PROCEDURE public.renovarsubscripcion(bigint, character varying, integer)
-    OWNER TO w4ll4c3;

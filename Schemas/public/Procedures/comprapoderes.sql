@@ -99,5 +99,3 @@ BEGIN
 	END;
 END
 $BODY$;
-ALTER PROCEDURE public.comprapoderes(character varying, integer, numeric, character varying, character varying, character varying)
-    OWNER TO w4ll4c3;

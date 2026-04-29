@@ -20,6 +20,3 @@ CREATE TABLE IF NOT EXISTS public.atencion_policiaca
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.atencion_policiaca
-    OWNER to w4ll4c3;

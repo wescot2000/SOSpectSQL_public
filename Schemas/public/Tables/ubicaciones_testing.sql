@@ -9,10 +9,8 @@ CREATE TABLE IF NOT EXISTS public.ubicaciones_testing
     latitud numeric(9,6),
     longitud numeric(9,6),
     fecha_ubicacion timestamp with time zone,
+    pais_id character varying(3) COLLATE pg_catalog."default",
     CONSTRAINT pk_ubicaciones_testing PRIMARY KEY (ubicacion_id)
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.ubicaciones_testing
-    OWNER to w4ll4c3;

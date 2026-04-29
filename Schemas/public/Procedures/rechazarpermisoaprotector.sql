@@ -90,5 +90,3 @@ BEGIN
             RAISE EXCEPTION '%', sqlerrm;
 END;
 $BODY$;
-ALTER PROCEDURE public.rechazarpermisoaprotector(character varying, character varying)
-    OWNER TO w4ll4c3;

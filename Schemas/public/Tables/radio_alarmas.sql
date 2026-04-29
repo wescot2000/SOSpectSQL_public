@@ -12,6 +12,3 @@ CREATE TABLE IF NOT EXISTS public.radio_alarmas
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.radio_alarmas
-    OWNER to w4ll4c3;

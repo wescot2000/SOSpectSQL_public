@@ -13,6 +13,4 @@ CREATE OR REPLACE VIEW public.vw_solicitudes_pendientes_protegido
      JOIN personas pprot ON pprot.persona_id = aprobacion.persona_id_protector
   WHERE aprobacion.flag_aprobado IS NOT TRUE AND aprobacion.fecha_aprobado IS NULL;
 
-ALTER TABLE public.vw_solicitudes_pendientes_protegido
-    OWNER TO w4ll4c3;
 

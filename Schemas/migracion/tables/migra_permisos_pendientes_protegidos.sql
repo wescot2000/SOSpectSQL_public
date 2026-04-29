@@ -15,6 +15,3 @@ CREATE TABLE IF NOT EXISTS migracion.migra_permisos_pendientes_protegidos
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS migracion.migra_permisos_pendientes_protegidos
-    OWNER to w4ll4c3;

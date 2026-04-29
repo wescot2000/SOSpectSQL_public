@@ -43,16 +43,18 @@ BEGIN
 			RAISE EXCEPTION 'No existen subscripciones activas de protector-protegido. No se puede aplicar suspensión por esa razón. Comunícate con la persona que seguía tus alarmas para renovar esa subscripción';	
 	END IF;	
 
-	SELECT 
-		count(*) 
-	into 
+	SELECT
+		count(*)
+	into
 		v_suspensiones_aplicadas
-	FROM 
+	FROM
 		relacion_protegidos RP
-	where 
+	where
 		cast(now() as timestamp with time zone) between fecha_suspension and fecha_reactivacion
-	and 
-		rp.id_persona_protegida=v_persona_id_protegido;
+	and
+		rp.id_persona_protegida=v_persona_id_protegido
+	and
+		cast(now() as timestamp with time zone) between rp.fecha_activacion and rp.fecha_finalizacion;
 
 	
     IF v_suspensiones_aplicadas > 0 then
@@ -74,5 +76,3 @@ BEGIN
             RAISE EXCEPTION '%', sqlerrm;
 END;
 $BODY$;
-ALTER PROCEDURE public.suspenderpermisoaprotector(character varying, integer)
-    OWNER TO w4ll4c3;

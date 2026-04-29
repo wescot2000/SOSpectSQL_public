@@ -69,5 +69,3 @@ BEGIN
 END; 
 $BODY$;
 
-ALTER FUNCTION public.consultaparticipaciontiposalarma(text)
-    OWNER TO w4ll4c3;

@@ -10,10 +10,8 @@ CREATE TABLE IF NOT EXISTS migracion.migra_dispositivos
     plataforma character varying(100) COLLATE pg_catalog."default",
     idioma character varying(10) COLLATE pg_catalog."default",
     fecha_inicio timestamp with time zone,
-    fecha_fin timestamp with time zone
+    fecha_fin timestamp with time zone,
+    pais_id character varying(3) COLLATE pg_catalog."default"
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS migracion.migra_dispositivos
-    OWNER to w4ll4c3;

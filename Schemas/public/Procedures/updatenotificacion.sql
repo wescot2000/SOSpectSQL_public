@@ -2,40 +2,40 @@
 
 -- DROP PROCEDURE IF EXISTS public.updatenotificacion(character varying);
 
+-- MODIFICACIÓN 2026-02-09: Actualizar timestamp para throttling de 10 minutos
 CREATE OR REPLACE PROCEDURE public.updatenotificacion(
 	IN p_user_id_thirdparty character varying)
 LANGUAGE 'plpgsql'
 AS $BODY$
 
-DECLARE 
+DECLARE
 	v_persona_id BIGINT;
 BEGIN
 	BEGIN
 
-		SELECT 
+		SELECT
 			persona_id
-		INTO 
+		INTO
 			v_persona_id
-		FROM 
+		FROM
 			personas
 		WHERE
 			user_id_thirdParty=p_user_id_thirdparty;
 
-
-
+		-- Marcar como enviado Y actualizar timestamp de última notificación
 		UPDATE
 			notificaciones_persona
-		set
-			flag_enviado=cast(true as boolean)
+		SET
+			flag_enviado=cast(true as boolean),
+			ultima_notificacion_enviada=NOW()
 		WHERE
-			persona_id=v_persona_id;
-			
+			persona_id=v_persona_id
+			AND flag_enviado=FALSE;
+
 		EXCEPTION
 			WHEN OTHERS THEN
-				RAISE EXCEPTION '%', sqlerrm;	
-		
+				RAISE EXCEPTION '%', sqlerrm;
+
 	END;
 END
 $BODY$;
-ALTER PROCEDURE public.updatenotificacion(character varying)
-    OWNER TO w4ll4c3;

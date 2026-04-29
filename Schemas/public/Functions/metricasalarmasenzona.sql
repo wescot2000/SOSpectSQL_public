@@ -53,5 +53,3 @@ BEGIN
 END; 
 $BODY$;
 
-ALTER FUNCTION public.metricasalarmasenzona(text)
-    OWNER TO w4ll4c3;

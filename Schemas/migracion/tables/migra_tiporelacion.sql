@@ -9,6 +9,3 @@ CREATE TABLE IF NOT EXISTS migracion.migra_tiporelacion
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS migracion.migra_tiporelacion
-    OWNER to w4ll4c3;

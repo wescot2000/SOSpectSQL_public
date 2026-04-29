@@ -37,6 +37,4 @@ UNION
 SELECT alarma_id FROM AlarmasDescendientes;
 $BODY$;
 
-ALTER FUNCTION public.fn_listaralarmasrelacionadas(bigint)
-    OWNER TO w4ll4c3;
 

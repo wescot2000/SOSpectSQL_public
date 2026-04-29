@@ -1,4 +1,5 @@
 -- Table: public.alarmas
+-- MODIFICADO: 2026-02-26 - Agregar contadores denormalizados de interacciones sociales
 
 -- DROP TABLE IF EXISTS public.alarmas;
 
@@ -17,6 +18,12 @@ CREATE TABLE IF NOT EXISTS public.alarmas
     ip_usuario_originador character varying(50) COLLATE pg_catalog."default",
     distancia_alarma_originador numeric(9,2),
     alarma_id_padre bigint,
+    evaluada boolean NOT NULL DEFAULT false,
+    -- Contadores denormalizados para evitar COUNT en cada consulta del feed
+    cnt_likes integer NOT NULL DEFAULT 0,
+    cnt_reenvios integer NOT NULL DEFAULT 0,
+    cnt_verdaderos integer NOT NULL DEFAULT 0,
+    cnt_falsos integer NOT NULL DEFAULT 0,
     CONSTRAINT pk_alarmas PRIMARY KEY (alarma_id),
     CONSTRAINT fk_alarmas_reference_personas FOREIGN KEY (persona_id)
         REFERENCES public.personas (persona_id) MATCH SIMPLE
@@ -26,5 +33,29 @@ CREATE TABLE IF NOT EXISTS public.alarmas
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.alarmas
-    OWNER to w4ll4c3;
+-- Index: idx_alarmas_estado_tipo
+
+-- DROP INDEX IF EXISTS public.idx_alarmas_estado_tipo;
+
+CREATE INDEX IF NOT EXISTS idx_alarmas_estado_tipo
+    ON public.alarmas USING btree
+    (estado_alarma COLLATE pg_catalog."default" ASC NULLS LAST, tipoalarma_id ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: idx_alarmas_padre_fecha
+
+-- DROP INDEX IF EXISTS public.idx_alarmas_padre_fecha;
+
+CREATE INDEX IF NOT EXISTS idx_alarmas_padre_fecha
+    ON public.alarmas USING btree
+    (alarma_id_padre ASC NULLS LAST, fecha_alarma ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: idx_alarmas_geography (PostGIS)
+-- Indice espacial GiST para ST_DWithin en vw_cantidad_alarmas_zona
+
+-- DROP INDEX IF EXISTS public.idx_alarmas_geography;
+
+CREATE INDEX IF NOT EXISTS idx_alarmas_geography
+    ON public.alarmas
+    USING GIST (
+        (ST_SetSRID(ST_MakePoint(longitud::float8, latitud::float8), 4326)::geography)
+    );

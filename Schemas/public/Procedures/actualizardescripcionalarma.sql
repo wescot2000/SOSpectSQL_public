@@ -119,5 +119,3 @@ BEGIN
 		
 END
 $BODY$;
-ALTER PROCEDURE public.actualizardescripcionalarma(character varying, bigint, character varying, character varying, character varying, character varying, integer, character varying, character varying)
-    OWNER TO w4ll4c3;

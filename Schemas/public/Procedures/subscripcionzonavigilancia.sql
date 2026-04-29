@@ -157,5 +157,3 @@ BEGIN
 	END;
 END
 $BODY$;
-ALTER PROCEDURE public.subscripcionzonavigilancia(character varying, numeric, numeric)
-    OWNER TO w4ll4c3;

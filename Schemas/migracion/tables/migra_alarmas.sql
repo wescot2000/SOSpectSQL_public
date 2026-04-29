@@ -1,4 +1,5 @@
 -- Table: migracion.migra_alarmas
+-- MODIFICADO: 2026-04-25 - Agregar contadores denormalizados de interacciones sociales (sincronizar con public.alarmas 2026-02-26)
 
 -- DROP TABLE IF EXISTS migracion.migra_alarmas;
 
@@ -16,10 +17,12 @@ CREATE TABLE IF NOT EXISTS migracion.migra_alarmas
     longitud_originador numeric(9,6),
     ip_usuario_originador character varying(50) COLLATE pg_catalog."default",
     distancia_alarma_originador numeric(9,2),
-    alarma_id_padre bigint
+    alarma_id_padre bigint,
+    evaluada boolean,
+    cnt_likes integer NOT NULL DEFAULT 0,
+    cnt_reenvios integer NOT NULL DEFAULT 0,
+    cnt_verdaderos integer NOT NULL DEFAULT 0,
+    cnt_falsos integer NOT NULL DEFAULT 0
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS migracion.migra_alarmas
-    OWNER to w4ll4c3;

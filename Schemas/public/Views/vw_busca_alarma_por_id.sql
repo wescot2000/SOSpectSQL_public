@@ -45,8 +45,11 @@ CREATE OR REPLACE VIEW public.vw_busca_alarma_por_id
     coalesce(dal.Flag_hubo_captura,cast(false as boolean)) as Flag_hubo_captura,
     case when  (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) > 0 then cast (true as boolean) else cast (false as boolean) end as flag_alarma_siendo_atendida,
     (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) as cantidad_agentes_atendiendo,
-    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dal.veracidadalarma is null) as cantidad_interacciones,
-    p.flag_es_policia
+    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dalt.veracidadalarma is null) as cantidad_interacciones,
+    p.flag_es_policia,
+    CAST(descr.descripcionalarma AS varchar(500)) AS Descripcionalarma,
+    coalesce(alper.flag_red_confianza, cast(FALSE as boolean)) as flag_red_confianza,
+    ta.tipo_cierre
    FROM alarmas al
      JOIN personas p ON p.persona_id = al.persona_id
      JOIN personas alper ON alper.persona_id = al.persona_id
@@ -68,8 +71,30 @@ CREATE OR REPLACE VIEW public.vw_busca_alarma_por_id
                 END AS cantidad_total
            FROM alarmas al_1
              LEFT JOIN descripcionesalarmas da ON al_1.alarma_id = da.alarma_id
-          GROUP BY al_1.alarma_id) total ON al.alarma_id = total.alarma_id;
+          GROUP BY al_1.alarma_id) total ON al.alarma_id = total.alarma_id
+    LEFT JOIN (
+        SELECT 
+            al_1.alarma_id,
+            COALESCE(
+                (
+                    SELECT da.descripcionalarma
+                    FROM descripcionesalarmas da
+                    WHERE da.alarma_id = al_1.alarma_id 
+                    AND da.descripcionalarma IS NOT NULL
+                    ORDER BY da.iddescripcion ASC
+                    LIMIT 1
+                ),
+                (
+                    SELECT da_padre.descripcionalarma
+                    FROM descripcionesalarmas da_padre
+                    WHERE da_padre.alarma_id = al_1.alarma_id_padre 
+                    AND da_padre.descripcionalarma IS NOT NULL
+                    ORDER BY da_padre.iddescripcion ASC
+                    LIMIT 1
+                ),
+                'Sin descripción por el momento'
+            ) AS descripcionalarma
+        FROM alarmas al_1
+    ) descr ON al.alarma_id = descr.alarma_id;
 
-ALTER TABLE public.vw_busca_alarma_por_id
-    OWNER TO w4ll4c3;
 

@@ -11,6 +11,3 @@ CREATE TABLE IF NOT EXISTS migracion.migra_condiciones_servicio
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS migracion.migra_condiciones_servicio
-    OWNER to w4ll4c3;

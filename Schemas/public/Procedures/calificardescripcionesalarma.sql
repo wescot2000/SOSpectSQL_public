@@ -146,5 +146,3 @@ BEGIN
 	END;
 END
 $BODY$;
-ALTER PROCEDURE public.calificardescripcionesalarma(character varying, bigint, character varying)
-    OWNER TO w4ll4c3;

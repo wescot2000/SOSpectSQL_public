@@ -12,6 +12,7 @@ CREATE OR REPLACE VIEW public.vw_mis_subscripciones
                     WHEN rp.id_rel_protegido IS NOT NULL THEN (('Usuario protegido: '::text || pprot.login::text))::character varying(1200)
                     WHEN ra.radio_alarmas_id IS NOT NULL THEN (('Radio ampliado en subscripcion: '::text || ra.radio_mts))::character varying(1200)
                     WHEN u.ubicacion_id IS NOT NULL THEN (((('Zona de vigilancia adquirida (Consulta el punto en google maps si te resulta desconocida): '::text || u.latitud) || ','::text) || u.longitud))::character varying(1200)
+                    WHEN s.alarma_id IS NOT NULL THEN (('Promoción local: '::text || COALESCE(e.nombre_emprendimiento, 'Sin nombre'::character varying)::text))::character varying(1200)
                     ELSE NULL::character varying
                 END AS descripcion,
             s.fecha_finalizacion,
@@ -23,6 +24,7 @@ CREATE OR REPLACE VIEW public.vw_mis_subscripciones
             COALESCE(s.observaciones, 'Ninguna Observacion'::character varying) AS observ_subscripcion,
                 CASE
                     WHEN s.observaciones IS NOT NULL THEN false
+                    WHEN s.alarma_id IS NOT NULL THEN false  -- Promociones no son renovables
                     WHEN (EXISTS ( SELECT 1
                        FROM subscripciones active_sub
                          LEFT JOIN relacion_protegidos rpt ON rpt.id_rel_protegido = active_sub.id_rel_protegido
@@ -32,6 +34,7 @@ CREATE OR REPLACE VIEW public.vw_mis_subscripciones
                 END AS flag_renovable,
                 CASE
                     WHEN s.observaciones IS NOT NULL THEN 'No puede renovarse debido a que fue cancelada, requiere subscripción nueva'::character varying(80)
+                    WHEN s.alarma_id IS NOT NULL THEN 'Anuncio publicitario de usuarios'::character varying(80)  -- Texto para promociones
                     WHEN s.fecha_finalizacion > now() THEN 'Subscripcion vigente'::character varying(80)
                     WHEN (EXISTS ( SELECT 1
                        FROM subscripciones active_sub
@@ -44,7 +47,9 @@ CREATE OR REPLACE VIEW public.vw_mis_subscripciones
                 CASE
                     WHEN s.fecha_finalizacion < now() THEN 1
                     ELSE 2
-                END) ORDER BY s.fecha_finalizacion DESC) AS rn
+                END) ORDER BY s.fecha_finalizacion DESC) AS rn,
+            s.tipo_subscr_id,
+            CASE WHEN s.alarma_id IS NOT NULL THEN true ELSE false END AS es_promocion
            FROM subscripciones s
              JOIN personas p ON p.persona_id = s.persona_id
              JOIN tiposubscripcion ts ON ts.tipo_subscr_id = s.tipo_subscr_id
@@ -52,6 +57,7 @@ CREATE OR REPLACE VIEW public.vw_mis_subscripciones
              LEFT JOIN personas pprot ON pprot.persona_id = rp.id_persona_protegida
              LEFT JOIN radio_alarmas ra ON ra.radio_alarmas_id = s.radio_alarmas_id
              LEFT JOIN ubicaciones u ON u.ubicacion_id = s.ubicacion_id AND u."Tipo"::text = 'S'::text
+             LEFT JOIN emprendimientos e ON e.id_emprendimiento = s.id_emprendimiento
         )
  SELECT rk.subscripcion_id,
     rk.user_id_thirdparty,
@@ -63,11 +69,11 @@ CREATE OR REPLACE VIEW public.vw_mis_subscripciones
     rk.observ_subscripcion,
     rk.flag_renovable,
     rk.texto_renovable,
-    rk.rn
+    rk.rn,
+    rk.tipo_subscr_id,
+    rk.es_promocion
    FROM ranked_subscriptions rk
   WHERE rk.fecha_finalizacion > now() OR rk.fecha_finalizacion < now() AND rk.rn <= 3
   ORDER BY rk.fecha_finalizacion DESC;
 
-ALTER TABLE public.vw_mis_subscripciones
-    OWNER TO w4ll4c3;
 

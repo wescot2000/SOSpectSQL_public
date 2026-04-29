@@ -12,6 +12,3 @@ CREATE TABLE IF NOT EXISTS public.condiciones_servicio
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.condiciones_servicio
-    OWNER to w4ll4c3;

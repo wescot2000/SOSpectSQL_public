@@ -8,10 +8,8 @@ CREATE TABLE IF NOT EXISTS migracion.migra_ubicaciones_testing
     persona_id bigint,
     latitud numeric(9,6),
     longitud numeric(9,6),
-    fecha_ubicacion timestamp with time zone
+    fecha_ubicacion timestamp with time zone,
+    pais_id character varying(3) COLLATE pg_catalog."default"
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS migracion.migra_ubicaciones_testing
-    OWNER to w4ll4c3;

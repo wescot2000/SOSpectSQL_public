@@ -8,10 +8,8 @@ CREATE TABLE IF NOT EXISTS migracion.migra_notificaciones_persona
     persona_id bigint,
     alarma_id bigint,
     flag_enviado boolean,
-    fecha_notificacion timestamp with time zone
+    fecha_notificacion timestamp with time zone,
+    ultima_notificacion_enviada timestamp with time zone
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS migracion.migra_notificaciones_persona
-    OWNER to w4ll4c3;

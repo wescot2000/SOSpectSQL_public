@@ -9,6 +9,3 @@ CREATE TABLE IF NOT EXISTS migracion.migra_tiposubscripcion
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS migracion.migra_tiposubscripcion
-    OWNER to w4ll4c3;

@@ -8,10 +8,8 @@ CREATE TABLE IF NOT EXISTS public.app_versions
     version_number character varying(10) COLLATE pg_catalog."default",
     is_supported boolean,
     date_added timestamp without time zone DEFAULT (now() AT TIME ZONE 'utc'::text),
-    CONSTRAINT pk_app_versions PRIMARY KEY (id)
+    CONSTRAINT pk_app_versions PRIMARY KEY (id),
+    CONSTRAINT uk_ver UNIQUE (version_number)
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.app_versions
-    OWNER to w4ll4c3;

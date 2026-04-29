@@ -3,9 +3,10 @@
 -- DROP PROCEDURE IF EXISTS public.upsertubicacion(character varying, numeric, numeric);
 
 CREATE OR REPLACE PROCEDURE public.upsertubicacion(
-	IN p_user_id_thirdparty character varying,
-	IN p_latitud numeric,
-	IN p_longitud numeric)
+    IN p_user_id_thirdparty character varying,
+    IN p_latitud numeric,
+    IN p_longitud numeric,
+    IN p_pais_id character varying)
 LANGUAGE 'plpgsql'
 AS $BODY$
 
@@ -13,106 +14,81 @@ DECLARE
     v_persona_id BIGINT;
     v_ubicacion_id BIGINT;
 BEGIN
+    -- Obtener el ID de la persona
     SELECT 
-            persona_id
-        INTO 
-            v_persona_id
+        persona_id
+    INTO 
+        v_persona_id
     FROM 
         personas
     WHERE
-        user_id_thirdparty=p_user_id_thirdparty;
+        user_id_thirdparty = p_user_id_thirdparty;
 
-    select 
-       ubicacion_id
-	INTO
-		v_ubicacion_id
+    -- Determinar el ID de la ubicación actual (si existe)
+    SELECT 
+        ubicacion_id
+    INTO
+        v_ubicacion_id
     FROM 
         ubicaciones
     WHERE
-        persona_id=v_persona_id
-	and 
-		v_persona_id is not null
-    and
-        "Tipo"='P';
+        persona_id = v_persona_id
+        AND v_persona_id IS NOT NULL
+        AND "Tipo" = 'P';
 
-	insert 
-		into 
-			public.notificaciones_persona
-			(
-				persona_id
-				,alarma_id
-				,flag_enviado
-				,fecha_notificacion
-			)
-		select 
-			p.persona_id
-			,v.alarma_id
-			,cast(false as boolean)
-			,now()
-		FROM 
-			personas p
-		inner join 
-			vw_busca_alarmas_por_zona v
-		on 
-			(
-				v.user_id_thirdparty=p.user_id_thirdparty
-			)
-        left outer join notificaciones_persona np
-            on (
-                np.alarma_id=v.alarma_id and np.persona_id=p.persona_id
-                )
-		WHERE 
-		    p.user_id_thirdparty =  p_user_id_thirdparty
-        and 
-            np.alarma_id is null;
+    -- Inserción para trazabilidad (puedes remover en producción)
+    INSERT INTO 
+        ubicaciones_testing
+            (persona_id,
+             latitud,
+             longitud,
+             fecha_ubicacion,
+             pais_id)
+    VALUES (
+        v_persona_id,
+        p_latitud,
+        p_longitud,
+        now(),
+        p_pais_id
+    );
 
-	/*INSERT CREADO PARA TRAZABILIDAD DE CANTIDAD DE COMUNICACION POR UPSERT, BORRABLE PARA ENTRADA EN PRODUCCION*/
-	insert into 
-		ubicaciones_testing
-			(persona_id,
-			latitud,
-			longitud,
-			fecha_ubicacion)
-			VALUES(
-			v_persona_id
-			,p_latitud
-			,p_longitud
-			,now()
-			);
-	/*FIN DE INSERT CREADO PARA TRAZABILIDAD DE CANTIDAD DE COMUNICACION POR UPSERT, BORRABLE PARA ENTRADA EN PRODUCCION*/
-
-    IF v_ubicacion_id is null THEN
+    -- Si no existe una ubicación, inserta una nueva
+    IF v_ubicacion_id IS NULL THEN
         INSERT INTO 
             ubicaciones 
                 (
-                    persona_id
-                    ,latitud
-                    ,longitud
-                    ,"Tipo"
+                    persona_id,
+                    latitud,
+                    longitud,
+                    "Tipo",
+                    pais_id
                 )
         VALUES
-                (
-                    v_persona_id
-                    ,p_latitud
-                    ,p_longitud
-                    ,'P'
-                );
+            (
+                v_persona_id,
+                p_latitud,
+                p_longitud,
+                'P',
+                p_pais_id
+            );
     ELSE
+        -- Si ya existe una ubicación, actualiza la existente
         UPDATE 
             ubicaciones
         SET 
-            latitud = p_latitud
-            ,longitud=p_longitud
+            latitud = p_latitud,
+            longitud = p_longitud,
+            pais_id = p_pais_id
         WHERE
             "Tipo" = 'P'
-        and 
-            ubicacion_id=v_ubicacion_id;
+        AND 
+            ubicacion_id = v_ubicacion_id;
     END IF;
 
-    EXCEPTION
-        WHEN OTHERS THEN
-            RAISE EXCEPTION '%', sqlerrm;
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE EXCEPTION '%', sqlerrm;
 END;
 $BODY$;
-ALTER PROCEDURE public.upsertubicacion(character varying, numeric, numeric)
-    OWNER TO w4ll4c3;
+
+    

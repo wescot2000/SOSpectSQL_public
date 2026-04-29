@@ -8,6 +8,3 @@ CREATE TABLE IF NOT EXISTS public.v_radio_alarmas_id
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.v_radio_alarmas_id
-    OWNER to w4ll4c3;

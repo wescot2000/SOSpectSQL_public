@@ -44,9 +44,11 @@ CREATE OR REPLACE VIEW public.vw_busca_alarmas_por_zona
     coalesce(dal.Flag_hubo_captura,cast(false as boolean)) as Flag_hubo_captura,
     case when  (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) > 0 then cast (true as boolean) else cast (false as boolean) end as flag_alarma_siendo_atendida,
     (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) as cantidad_agentes_atendiendo,
-    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dal.veracidadalarma is null) as cantidad_interacciones,
+    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dalt.veracidadalarma is null) as cantidad_interacciones,
     p.flag_es_policia,
-    cast(3 as integer) AS prioridad
+    cast(3 as integer) AS prioridad,
+    CAST(descr.descripcionalarma AS varchar(500)) AS Descripcionalarma,
+    coalesce(alper.flag_red_confianza, cast(FALSE as boolean)) as flag_red_confianza
    FROM ubicaciones u
      JOIN personas p ON p.persona_id = u.persona_id AND u."Tipo"::text = 'P'::text
      JOIN radio_alarmas ra ON p.radio_alarmas_id = ra.radio_alarmas_id
@@ -91,7 +93,31 @@ CREATE OR REPLACE VIEW public.vw_busca_alarmas_por_zona
              LEFT JOIN descripcionesalarmas da ON al_1.alarma_id = da.alarma_id
           WHERE al_1.estado_alarma IS NULL
           GROUP BY al_1.alarma_id) total ON al.alarma_id = total.alarma_id
-  WHERE   
+    LEFT JOIN (
+        SELECT 
+            al_1.alarma_id,
+            COALESCE(
+                (
+                    SELECT da.descripcionalarma
+                    FROM descripcionesalarmas da
+                    WHERE da.alarma_id = al_1.alarma_id 
+                    AND da.descripcionalarma IS NOT NULL
+                    ORDER BY da.iddescripcion ASC
+                    LIMIT 1
+                ),
+                (
+                    SELECT da_padre.descripcionalarma
+                    FROM descripcionesalarmas da_padre
+                    WHERE da_padre.alarma_id = al_1.alarma_id_padre 
+                    AND da_padre.descripcionalarma IS NOT NULL
+                    ORDER BY da_padre.iddescripcion ASC
+                    LIMIT 1
+                ),
+                'Sin descripción por el momento'
+            ) AS descripcionalarma
+        FROM alarmas al_1
+    ) descr ON al.alarma_id = descr.alarma_id
+WHERE   
     (
         al.estado_alarma IS NULL 
     )
@@ -141,9 +167,11 @@ UNION
     coalesce(dal.Flag_hubo_captura,cast(false as boolean)) as Flag_hubo_captura,
     case when  (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) > 0 then cast (true as boolean) else cast (false as boolean) end as flag_alarma_siendo_atendida,
     (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) as cantidad_agentes_atendiendo,
-    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dal.veracidadalarma is null) as cantidad_interacciones,
+    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dalt.veracidadalarma is null) as cantidad_interacciones,
     p.flag_es_policia,
-    cast(4 as integer) AS prioridad
+    cast(4 as integer) AS prioridad,
+    CAST(descr.descripcionalarma AS varchar(500)) AS Descripcionalarma,
+    coalesce(alper.flag_red_confianza, cast(FALSE as boolean)) as flag_red_confianza
    FROM alarmas al
      JOIN ubicaciones u ON u.latitud >= (al.latitud - 0.090000) AND u.latitud <= (al.latitud + 0.090000) AND u.longitud >= (al.longitud - 0.090000) AND u.longitud <= (al.longitud + 0.090000) AND u."Tipo"::text = 'P'::text
      JOIN personas p ON p.persona_id = u.persona_id
@@ -169,6 +197,30 @@ UNION
              LEFT JOIN descripcionesalarmas da ON al_1.alarma_id = da.alarma_id
           WHERE al_1.estado_alarma IS NULL
           GROUP BY al_1.alarma_id) total ON al.alarma_id = total.alarma_id
+    LEFT JOIN (
+        SELECT 
+            al_1.alarma_id,
+            COALESCE(
+                (
+                    SELECT da.descripcionalarma
+                    FROM descripcionesalarmas da
+                    WHERE da.alarma_id = al_1.alarma_id 
+                    AND da.descripcionalarma IS NOT NULL
+                    ORDER BY da.iddescripcion ASC
+                    LIMIT 1
+                ),
+                (
+                    SELECT da_padre.descripcionalarma
+                    FROM descripcionesalarmas da_padre
+                    WHERE da_padre.alarma_id = al_1.alarma_id_padre 
+                    AND da_padre.descripcionalarma IS NOT NULL
+                    ORDER BY da_padre.iddescripcion ASC
+                    LIMIT 1
+                ),
+                'Sin descripción por el momento'
+            ) AS descripcionalarma
+        FROM alarmas al_1
+    ) descr ON al.alarma_id = descr.alarma_id
   WHERE  (
         al.estado_alarma IS NULL 
     )
@@ -218,9 +270,11 @@ UNION
     coalesce(dal.Flag_hubo_captura,cast(false as boolean)) as Flag_hubo_captura,
     case when  (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) > 0 then cast (true as boolean) else cast (false as boolean) end as flag_alarma_siendo_atendida,
     (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) as cantidad_agentes_atendiendo,
-    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dal.veracidadalarma is null) as cantidad_interacciones,
+    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dalt.veracidadalarma is null) as cantidad_interacciones,
     p.flag_es_policia,
-    cast (5 as integer) AS prioridad
+    cast (5 as integer) AS prioridad,
+    CAST(descr.descripcionalarma AS varchar(500)) AS Descripcionalarma,
+    coalesce(alper.flag_red_confianza, cast(FALSE as boolean)) as flag_red_confianza
    FROM alarmas al
      JOIN ubicaciones u ON u.latitud >= (al.latitud - 0.009000) AND u.latitud <= (al.latitud + 0.009000) AND u.longitud >= (al.longitud - 0.009000) AND u.longitud <= (al.longitud + 0.009000) AND u."Tipo"::text = 'P'::text
      JOIN personas p ON p.persona_id = u.persona_id
@@ -246,6 +300,30 @@ UNION
              LEFT JOIN descripcionesalarmas da ON al_1.alarma_id = da.alarma_id
           WHERE al_1.estado_alarma IS NULL
           GROUP BY al_1.alarma_id) total ON al.alarma_id = total.alarma_id
+    LEFT JOIN (
+        SELECT 
+            al_1.alarma_id,
+            COALESCE(
+                (
+                    SELECT da.descripcionalarma
+                    FROM descripcionesalarmas da
+                    WHERE da.alarma_id = al_1.alarma_id 
+                    AND da.descripcionalarma IS NOT NULL
+                    ORDER BY da.iddescripcion ASC
+                    LIMIT 1
+                ),
+                (
+                    SELECT da_padre.descripcionalarma
+                    FROM descripcionesalarmas da_padre
+                    WHERE da_padre.alarma_id = al_1.alarma_id_padre 
+                    AND da_padre.descripcionalarma IS NOT NULL
+                    ORDER BY da_padre.iddescripcion ASC
+                    LIMIT 1
+                ),
+                'Sin descripción por el momento'
+            ) AS descripcionalarma
+        FROM alarmas al_1
+    ) descr ON al.alarma_id = descr.alarma_id
   WHERE  (
         al.estado_alarma IS NULL 
     )
@@ -295,9 +373,11 @@ UNION
     coalesce(dal.Flag_hubo_captura,cast(false as boolean)) as Flag_hubo_captura,
     case when  (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) > 0 then cast (true as boolean) else cast (false as boolean) end as flag_alarma_siendo_atendida,
     (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) as cantidad_agentes_atendiendo,
-    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dal.veracidadalarma is null) as cantidad_interacciones,
+    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dalt.veracidadalarma is null) as cantidad_interacciones,
     p.flag_es_policia,
-    cast(6 as integer) AS prioridad
+    cast(6 as integer) AS prioridad,
+    CAST(descr.descripcionalarma AS varchar(500)) AS Descripcionalarma,
+    coalesce(alper.flag_red_confianza, cast(FALSE as boolean)) as flag_red_confianza
    FROM alarmas al
      JOIN ubicaciones u ON u.latitud >= (al.latitud - 9.000000) AND u.latitud <= (al.latitud + 9.000000) AND u.longitud >= (al.longitud - 9.000000) AND u.longitud <= (al.longitud + 9.000000) AND u."Tipo"::text = 'P'::text
      JOIN personas p ON p.persona_id = u.persona_id
@@ -323,6 +403,30 @@ UNION
              LEFT JOIN descripcionesalarmas da ON al_1.alarma_id = da.alarma_id
           WHERE al_1.estado_alarma IS NULL
           GROUP BY al_1.alarma_id) total ON al.alarma_id = total.alarma_id
+    LEFT JOIN (
+        SELECT 
+            al_1.alarma_id,
+            COALESCE(
+                (
+                    SELECT da.descripcionalarma
+                    FROM descripcionesalarmas da
+                    WHERE da.alarma_id = al_1.alarma_id 
+                    AND da.descripcionalarma IS NOT NULL
+                    ORDER BY da.iddescripcion ASC
+                    LIMIT 1
+                ),
+                (
+                    SELECT da_padre.descripcionalarma
+                    FROM descripcionesalarmas da_padre
+                    WHERE da_padre.alarma_id = al_1.alarma_id_padre 
+                    AND da_padre.descripcionalarma IS NOT NULL
+                    ORDER BY da_padre.iddescripcion ASC
+                    LIMIT 1
+                ),
+                'Sin descripción por el momento'
+            ) AS descripcionalarma
+        FROM alarmas al_1
+    ) descr ON al.alarma_id = descr.alarma_id
   WHERE  (
         al.estado_alarma IS NULL 
     )
@@ -372,9 +476,11 @@ UNION
     coalesce(dal.Flag_hubo_captura,cast(false as boolean)) as Flag_hubo_captura,
     case when  (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) > 0 then cast (true as boolean) else cast (false as boolean) end as flag_alarma_siendo_atendida,
     (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) as cantidad_agentes_atendiendo,
-    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dal.veracidadalarma is null) as cantidad_interacciones,
+    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dalt.veracidadalarma is null) as cantidad_interacciones,
     p.flag_es_policia,
-    cast(1 as integer) AS prioridad
+    cast(1 as integer) AS prioridad,
+    CAST(descr.descripcionalarma AS varchar(500)) AS Descripcionalarma,
+    coalesce(alper.flag_red_confianza, cast(FALSE as boolean)) as flag_red_confianza
    FROM alarmas al
      JOIN relacion_protegidos rp ON al.persona_id = rp.id_persona_protegida AND now() >= rp.fecha_activacion AND now() <= COALESCE(rp.fecha_finalizacion, now()) AND (rp.fecha_suspension IS NULL AND rp.fecha_reactivacion IS NULL OR rp.fecha_suspension IS NULL AND rp.fecha_reactivacion <= now() OR rp.fecha_reactivacion IS NULL AND rp.fecha_suspension >= now() OR now() < rp.fecha_suspension OR now() > rp.fecha_reactivacion)
      JOIN tipoalarma ta ON ta.tipoalarma_id = al.tipoalarma_id
@@ -405,6 +511,30 @@ UNION
           WHERE al_1.estado_alarma IS NULL
           GROUP BY al_1.alarma_id) total ON al.alarma_id = total.alarma_id
      LEFT JOIN descripcionesalarmas dal ON dal.alarma_id = al.alarma_id AND dal.persona_id = p.persona_id AND dal.veracidadalarma IS NOT NULL
+    LEFT JOIN (
+        SELECT 
+            al_1.alarma_id,
+            COALESCE(
+                (
+                    SELECT da.descripcionalarma
+                    FROM descripcionesalarmas da
+                    WHERE da.alarma_id = al_1.alarma_id 
+                    AND da.descripcionalarma IS NOT NULL
+                    ORDER BY da.iddescripcion ASC
+                    LIMIT 1
+                ),
+                (
+                    SELECT da_padre.descripcionalarma
+                    FROM descripcionesalarmas da_padre
+                    WHERE da_padre.alarma_id = al_1.alarma_id_padre 
+                    AND da_padre.descripcionalarma IS NOT NULL
+                    ORDER BY da_padre.iddescripcion ASC
+                    LIMIT 1
+                ),
+                'Sin descripción por el momento'
+            ) AS descripcionalarma
+        FROM alarmas al_1
+    ) descr ON al.alarma_id = descr.alarma_id
   WHERE  (
         al.estado_alarma IS NULL 
     )
@@ -454,9 +584,11 @@ UNION
     coalesce(dal.Flag_hubo_captura,cast(false as boolean)) as Flag_hubo_captura,
     case when  (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) > 0 then cast (true as boolean) else cast (false as boolean) end as flag_alarma_siendo_atendida,
     (select count(*) as cantidad_agentes_atendiendo from atencion_policiaca ap where ap.alarma_id=al.alarma_id) as cantidad_agentes_atendiendo,
-    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dal.veracidadalarma is null) as cantidad_interacciones,
+    (select count(*) as cantidad_interacciones from descripcionesalarmas dalt where dalt.alarma_id = al.alarma_id and dalt.veracidadalarma is null) as cantidad_interacciones,
     p.flag_es_policia,
-    cast(2 as integer) AS prioridad
+    cast(2 as integer) AS prioridad,
+    CAST(descr.descripcionalarma AS varchar(500)) AS Descripcionalarma,
+    coalesce(alper.flag_red_confianza, cast(FALSE as boolean)) as flag_red_confianza
    FROM alarmas al
      JOIN ubicaciones u ON u.latitud >= (al.latitud - 0.002700) AND u.latitud <= (al.latitud + 0.002700) AND u.longitud >= (al.longitud - 0.002700) AND u.longitud <= (al.longitud + 0.002700) AND u."Tipo"::text = 'S'::text
      JOIN personas p ON p.persona_id = u.persona_id
@@ -484,6 +616,30 @@ UNION
           WHERE al_1.estado_alarma IS NULL
           GROUP BY al_1.alarma_id) total ON al.alarma_id = total.alarma_id
      LEFT JOIN descripcionesalarmas dal ON dal.alarma_id = al.alarma_id AND dal.persona_id = p.persona_id AND dal.veracidadalarma IS NOT NULL
+    LEFT JOIN (
+        SELECT 
+            al_1.alarma_id,
+            COALESCE(
+                (
+                    SELECT da.descripcionalarma
+                    FROM descripcionesalarmas da
+                    WHERE da.alarma_id = al_1.alarma_id 
+                    AND da.descripcionalarma IS NOT NULL
+                    ORDER BY da.iddescripcion ASC
+                    LIMIT 1
+                ),
+                (
+                    SELECT da_padre.descripcionalarma
+                    FROM descripcionesalarmas da_padre
+                    WHERE da_padre.alarma_id = al_1.alarma_id_padre 
+                    AND da_padre.descripcionalarma IS NOT NULL
+                    ORDER BY da_padre.iddescripcion ASC
+                    LIMIT 1
+                ),
+                'Sin descripción por el momento'
+            ) AS descripcionalarma
+        FROM alarmas al_1
+    ) descr ON al.alarma_id = descr.alarma_id
   WHERE  (
         al.estado_alarma IS NULL 
     )
@@ -501,6 +657,3 @@ WHERE (user_id_thirdparty,alarma_id, prioridad) IN (
     SELECT user_id_thirdparty,alarma_id, MIN(prioridad)
     FROM Prioridades
     GROUP BY user_id_thirdparty,alarma_id);
-
-ALTER TABLE public.vw_busca_alarmas_por_zona
-    OWNER TO w4ll4c3;

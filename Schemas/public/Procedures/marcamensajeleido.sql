@@ -40,5 +40,3 @@ BEGIN
 	END;
 END
 $BODY$;
-ALTER PROCEDURE public.marcamensajeleido(character varying, bigint)
-    OWNER TO w4ll4c3;

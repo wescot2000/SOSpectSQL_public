@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS public.notificaciones_persona
     alarma_id bigint NOT NULL,
     flag_enviado boolean,
     fecha_notificacion timestamp with time zone,
+    ultima_notificacion_enviada timestamp with time zone,
     CONSTRAINT pk_notificaciones_persona PRIMARY KEY (notificacion_id),
     CONSTRAINT fk_notificaciones_persona_reference_alarmas FOREIGN KEY (alarma_id)
         REFERENCES public.alarmas (alarma_id) MATCH SIMPLE
@@ -22,8 +23,6 @@ CREATE TABLE IF NOT EXISTS public.notificaciones_persona
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.notificaciones_persona
-    OWNER to w4ll4c3;
 -- Index: fki_notificaciones_persona_alarma_id
 
 -- DROP INDEX IF EXISTS public.fki_notificaciones_persona_alarma_id;
@@ -40,3 +39,14 @@ CREATE INDEX IF NOT EXISTS fki_notificaciones_persona_persona_id
     ON public.notificaciones_persona USING btree
     (persona_id ASC NULLS LAST)
     TABLESPACE pg_default;
+-- Index: idx_notif_persona_ultima_notif
+
+-- DROP INDEX IF EXISTS public.idx_notif_persona_ultima_notif;
+
+CREATE INDEX IF NOT EXISTS idx_notif_persona_ultima_notif
+    ON public.notificaciones_persona USING btree
+    (persona_id ASC NULLS LAST, ultima_notificacion_enviada ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+COMMENT ON COLUMN public.notificaciones_persona.ultima_notificacion_enviada
+    IS 'Timestamp de la última notificación agregada enviada (throttling 10 min)';

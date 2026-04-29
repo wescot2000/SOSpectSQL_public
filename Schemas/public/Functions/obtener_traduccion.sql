@@ -36,5 +36,3 @@ EXCEPTION
 END;
 $BODY$;
 
-ALTER FUNCTION public.obtener_traduccion(text, text)
-    OWNER TO w4ll4c3;

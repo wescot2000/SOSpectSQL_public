@@ -22,6 +22,3 @@ CREATE TABLE IF NOT EXISTS public.aceptacion_condiciones
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.aceptacion_condiciones
-    OWNER to w4ll4c3;

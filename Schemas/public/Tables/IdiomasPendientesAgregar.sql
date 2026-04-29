@@ -12,6 +12,3 @@ CREATE TABLE IF NOT EXISTS public.idiomaspendientesagregar
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.idiomaspendientesagregar
-    OWNER to w4ll4c3;

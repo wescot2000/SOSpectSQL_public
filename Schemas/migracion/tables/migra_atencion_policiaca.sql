@@ -11,6 +11,3 @@ CREATE TABLE IF NOT EXISTS migracion.migra_atencion_policiaca
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS migracion.migra_atencion_policiaca
-    OWNER to w4ll4c3;

@@ -12,6 +12,3 @@ CREATE TABLE IF NOT EXISTS public.traducciones
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.traducciones
-    OWNER to w4ll4c3;

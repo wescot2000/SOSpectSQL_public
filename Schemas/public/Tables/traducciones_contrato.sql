@@ -17,6 +17,3 @@ CREATE TABLE IF NOT EXISTS public.traducciones_contrato
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.traducciones_contrato
-    OWNER to w4ll4c3;

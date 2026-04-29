@@ -39,5 +39,3 @@ BEGIN
 END;
 $BODY$;
 
-ALTER FUNCTION public.obtener_radio_alarmas(character varying)
-    OWNER TO w4ll4c3;

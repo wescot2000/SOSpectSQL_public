@@ -11,11 +11,12 @@ CREATE OR REPLACE PROCEDURE public.describiralarma(
 	IN p_descripcionarmas character varying,
 	IN p_tipoalarma_id integer,
 	IN p_ipusuario character varying,
-	IN p_idioma character varying)
+	IN p_idioma character varying,
+	IN p_fotos_json jsonb DEFAULT NULL)
 LANGUAGE 'plpgsql'
 AS $BODY$
 
-DECLARE 
+DECLARE
 	p_persona_id BIGINT;
 	v_persona_id_creador BIGINT;
 	v_latitud_alarma numeric(9,6);
@@ -25,6 +26,7 @@ DECLARE
 	v_distancia_alarma_originador numeric(9,2);
 	v_tipoalarma_id_actual INTEGER;
 	v_estado_alarma VARCHAR(10);
+	v_iddescripcion BIGINT;
 BEGIN
 	BEGIN
 		/*INFORMACION DE LA ALARMA*/
@@ -82,9 +84,9 @@ BEGIN
 	END;
 
 	BEGIN
-		
-		INSERT INTO 
-			descripcionesalarmas 
+
+		INSERT INTO
+			descripcionesalarmas
 				(
 					persona_id
 					,alarma_id
@@ -104,10 +106,10 @@ BEGIN
 			(
 				p_persona_id
 				,p_alarma_id
-				,p_DescripcionAlarma
-				,p_DescripcionSospechoso
-				,p_DescripcionVehiculo
-				,p_DescripcionArmas
+				,LEFT(p_DescripcionAlarma, 450)
+                ,LEFT(p_DescripcionSospechoso, 450)
+                ,LEFT(p_DescripcionVehiculo, 450)
+                ,LEFT(p_DescripcionArmas, 450)
 				,now()
 				,v_latitud_originador
 				,v_longitud_originador
@@ -115,11 +117,36 @@ BEGIN
 				,v_distancia_alarma_originador
 				,p_idioma
 				,cast(false as boolean)
-			);	
+			)
+		RETURNING iddescripcion INTO v_iddescripcion;
 
-		if v_tipoalarma_id_actual<>p_tipoalarma_id and p_persona_id=v_persona_id_creador then
+		-- Insertar fotos si existen
+		IF p_fotos_json IS NOT NULL THEN
+			INSERT INTO fotos_descripciones_alarmas (
+				iddescripcion,
+				url_foto,
+				nombre_archivo_original,
+				tipo_mime,
+				tamano_bytes,
+				es_video,
+				orden,
+				bucket_s3
+			)
+			SELECT
+				v_iddescripcion,
+				(foto->>'url_foto')::varchar,
+				(foto->>'nombre_archivo_original')::varchar,
+				(foto->>'tipo_mime')::varchar,
+				(foto->>'tamano_bytes')::bigint,
+				(foto->>'es_video')::boolean,
+				(foto->>'orden')::integer,
+				'sospect-s3-data-bucket-prod'
+			FROM jsonb_array_elements(p_fotos_json) AS foto;
+		END IF;
 
-			update 
+		if v_tipoalarma_id_actual<>p_tipoalarma_id and p_persona_id=v_persona_id_creador and p_tipoalarma_id<>9 then
+
+			update
 				alarmas
 			set
 				tipoalarma_id=p_tipoalarma_id
@@ -136,5 +163,3 @@ BEGIN
 		
 END
 $BODY$;
-ALTER PROCEDURE public.describiralarma(character varying, bigint, character varying, character varying, character varying, character varying, integer, character varying, character varying)
-    OWNER TO w4ll4c3;

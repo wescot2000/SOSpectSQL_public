@@ -12,6 +12,3 @@ CREATE TABLE IF NOT EXISTS migracion.migra_calificadores_descripcion
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS migracion.migra_calificadores_descripcion
-    OWNER to w4ll4c3;

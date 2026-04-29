@@ -18,6 +18,3 @@ CREATE TABLE IF NOT EXISTS public.poderes_regalados
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.poderes_regalados
-    OWNER to w4ll4c3;

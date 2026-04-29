@@ -106,5 +106,3 @@ BEGIN
             RAISE EXCEPTION '%', sqlerrm;
 END;
 $BODY$;
-ALTER PROCEDURE public.eliminarprotegido(character varying, character varying)
-    OWNER TO w4ll4c3;

@@ -81,8 +81,19 @@ BEGIN
             pais_id = p_pais_id
         WHERE
             "Tipo" = 'P'
-        AND 
+        AND
             ubicacion_id = v_ubicacion_id;
+    END IF;
+
+    -- Actualizar personas.pais SOLO cuando el país cambia (NUEVO 2026-06-04).
+    -- Mantiene personas.pais sincronizado con el flujo de ubicación sin penalizar
+    -- el rendimiento: no hace un UPDATE en cada ciclo, solo cuando el ISO difiere.
+    -- Permite que un usuario que viajó (ej: 'US') vuelva a 'CO' al regresar.
+    IF p_pais_id IS NOT NULL AND p_pais_id <> '' THEN
+        UPDATE personas
+        SET pais = p_pais_id
+        WHERE persona_id = v_persona_id
+          AND (pais IS NULL OR pais <> p_pais_id);
     END IF;
 
 EXCEPTION

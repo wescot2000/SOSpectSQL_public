@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS public.alarmas_territorio
     alarma_id           BIGINT PRIMARY KEY,
     barrio              VARCHAR(150),        -- NULLABLE: Nivel más granular (neighborhood)
     ciudad              VARCHAR(150),        -- NULLABLE: Ciudad o municipio (locality)
-    pais                VARCHAR(100),        -- NULLABLE: País (country)
+    pais                VARCHAR(100),        -- NULLABLE: País (country) — nombre completo (long_name)
+    pais_id             VARCHAR(2),          -- NULLABLE: ISO alpha-2 (short_name); filtro de país feed "Para Ti" (2026-06-04)
     barrio_normalizado  VARCHAR(150),        -- lowercase sin tildes; calculado por TerritorialService al insertar
     ciudad_normalizada  VARCHAR(150),        -- lowercase sin tildes; calculado por TerritorialService al insertar
     created_at          TIMESTAMP NOT NULL DEFAULT now(),
@@ -34,7 +35,10 @@ COMMENT ON COLUMN public.alarmas_territorio.ciudad IS
 'Nombre de la ciudad o municipio extraído de tipo "locality" de Google. NULLABLE: Permite flexibilidad global. Ejemplo: "Bogotá", "Medellín", "Ciudad de México"';
 
 COMMENT ON COLUMN public.alarmas_territorio.pais IS
-'Nombre del país extraído de tipo "country" de Google. NULLABLE: Permite manejo de casos edge. Ejemplo: "Colombia", "México", "Argentina"';
+'Nombre del país extraído de tipo "country" de Google (long_name). NULLABLE: Permite manejo de casos edge. Ejemplo: "Colombia", "México", "Argentina"';
+
+COMMENT ON COLUMN public.alarmas_territorio.pais_id IS
+'Código ISO alpha-2 del país, tomado del short_name del component "country" de Google (ej: "CO", "US", "MX"). NULLABLE. Usado por el filtro de país del feed nacional "Para Ti" (vista vw_feed_para_ti) comparando ISO contra personas.paises_feed_filtro. NUEVO 2026-06-04.';
 
 COMMENT ON COLUMN public.alarmas_territorio.barrio_normalizado IS
 'Barrio en minúsculas sin tildes (calculado por TerritorialService al insertar). Usado para join con pol_homologacion_google sin llamar unaccent() en tiempo de consulta.';
@@ -58,6 +62,10 @@ WHERE barrio IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_alarmas_territorio_pais
 ON public.alarmas_territorio(pais)
 WHERE pais IS NOT NULL;
+
+-- Índice para el filtro de país del feed "Para Ti" (ISO alpha-2) — 2026-06-04
+CREATE INDEX IF NOT EXISTS ix_alarmas_territorio_pais_id
+ON public.alarmas_territorio(pais_id);
 
 -- Índice para búsquedas por ciudad
 CREATE INDEX IF NOT EXISTS idx_alarmas_territorio_ciudad

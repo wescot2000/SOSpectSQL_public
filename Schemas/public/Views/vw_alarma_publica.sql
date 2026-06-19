@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- View: public.vw_alarma_publica
 -- Propósito: Expone campos seguros de una alarma para el endpoint público /api/public/alert/{id}.
 --            No incluye datos personales del creador (persona_id, user_id_thirdparty, login, etc.).
@@ -61,4 +67,6 @@ SELECT
 FROM alarmas al
 INNER JOIN tipoalarma ta ON ta.tipoalarma_id = al.tipoalarma_id
 LEFT JOIN alarmas_territorio atr ON atr.alarma_id = al.alarma_id;
+
+
 

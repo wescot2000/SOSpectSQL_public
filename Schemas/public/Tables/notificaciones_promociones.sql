@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.notificaciones_promociones
 -- Propósito: Auditoría de usuarios notificados en promociones locales
 -- Creado: 30-01-2026
@@ -63,3 +69,5 @@ COMMENT ON COLUMN public.notificaciones_promociones.envio_aceptado_firebase IS
 
 COMMENT ON COLUMN public.notificaciones_promociones.error_code IS
 'Código de error de Firebase si el envío fue rechazado. Valores comunes: UNREGISTERED (app desinstalada), INVALID_TOKEN (token FCM inválido), SENDER_ID_MISMATCH (configuración incorrecta).';
+
+

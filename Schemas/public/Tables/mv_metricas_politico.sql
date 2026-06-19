@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- TABLE: public.mv_metricas_politico
 -- Módulo político: caché de lectura rápida de métricas de desempeño por político.
 -- Creado: 2026-03-09 | Modificado: 2026-04-23
@@ -50,3 +56,5 @@ CREATE INDEX IF NOT EXISTS idx_mv_metricas_politico_score
 
 COMMENT ON TABLE public.mv_metricas_politico IS
 'Caché de lectura rápida de métricas de desempeño por político. Una fila por político (UNIQUE politico_id). Sincronizada diariamente por refrescar_metricas_politico() desde public.metricas_politico (SCD Tipo 2). La API y vw_autoridades_por_alarma leen desde aquí. Convertida de Materialized View a tabla regular el 2026-03-10 para soportar cálculo incremental ETL-aware.';
+
+

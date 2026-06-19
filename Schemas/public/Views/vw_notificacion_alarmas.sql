@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- View: public.vw_notificacion_alarmas
 -- Vista para feed Siguiendo con filtro de 90 minutos y radios parametrizados
 -- Fecha: 2026-01-05 (Agregado soporte para alarmas promocionales)
@@ -563,3 +569,5 @@ CREATE OR REPLACE VIEW public.vw_notificacion_alarmas
 
 
 COMMENT ON VIEW public.vw_notificacion_alarmas IS 'Vista de notificaciones para feed "Siguiendo". Actualizada con soporte para alarmas promocionales (tipoalarma_id=13). ACTUALIZADO 2026-01-29: Usar texto_push_personalizado para notificaciones push en lugar de descripcionalarma.';
+
+

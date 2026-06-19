@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.ubicaciones
 
 -- DROP TABLE IF EXISTS public.ubicaciones;
@@ -59,3 +65,4 @@ CREATE INDEX IF NOT EXISTS idx_ubicaciones_persona_tipo_p_latest
     ON public.ubicaciones (persona_id, ubicacion_id DESC)
     WHERE "Tipo" = 'P';
     
+

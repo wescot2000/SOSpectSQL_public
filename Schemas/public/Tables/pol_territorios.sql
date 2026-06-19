@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.pol_territorios
 -- Módulo político: árbol geográfico de territorios administrados por autoridades electas.
 -- Niveles universales (extensibles a cualquier país):
@@ -78,3 +84,5 @@ CREATE INDEX IF NOT EXISTS idx_pol_territorios_parent_id
 CREATE INDEX IF NOT EXISTS idx_pol_territorios_parent_pais
     ON public.pol_territorios(parent_pais_id)
     WHERE parent_pais_id IS NOT NULL;
+
+

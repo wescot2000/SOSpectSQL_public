@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Procedure: public.refrescar_metricas_politico
 -- Módulo político: cálculo incremental acumulativo de métricas de desempeño por político.
 -- Creado: 2026-03-09 | Rediseñado: 2026-03-10
@@ -605,3 +611,5 @@ $$;
 
 COMMENT ON PROCEDURE public.refrescar_metricas_politico() IS
 'Cálculo incremental acumulativo de métricas de desempeño por político. Por cada político vigente: (1) determina el corte desde fecha_hasta_alarmas del registro vigente en metricas_politico; (2) calcula el delta consultando public.alarmas UNION migracion.migra_alarmas filtradas por alarmas_territorio; (3) acumula sobre totales previos con promedio ponderado para avg_dias_resolucion; (4) cierra el registro anterior (SCD Tipo 2) e inserta el nuevo; (5) sincroniza mv_metricas_politico (caché API) y mv_metricas_politico_tipos. Se ejecuta diariamente a las 0:00 UTC vía pg_cron. Rediseñado 2026-03-10 para soportar archivado ETL.';
+
+

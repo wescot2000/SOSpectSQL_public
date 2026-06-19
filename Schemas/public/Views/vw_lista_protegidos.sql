@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- View: public.vw_lista_protegidos
 
 -- DROP VIEW public.vw_lista_protegidos;
@@ -26,5 +32,7 @@ CREATE OR REPLACE VIEW public.vw_lista_protegidos
      JOIN personas protector ON protector.persona_id = rp.id_persona_protector
      JOIN personas protegido ON protegido.persona_id = rp.id_persona_protegida
   WHERE now() >= rp.fecha_activacion AND now() <= COALESCE(rp.fecha_finalizacion, now());
+
+
 
 

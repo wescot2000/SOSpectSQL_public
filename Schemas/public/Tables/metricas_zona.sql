@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- TABLE: public.metricas_zona
 -- Métricas de reportes básicos precalculadas por celda geoespacial de 0.01° × 0.01° (~1.1 km).
 -- Diseño SCD Tipo 2: cada ejecución diaria cierra el registro vigente e inserta uno nuevo,
@@ -69,3 +75,5 @@ COMMENT ON COLUMN public.metricas_zona.avg_minutos_calificacion IS 'Promedio de 
 COMMENT ON COLUMN public.metricas_zona.cnt_capturas IS 'Alarmas en la zona donde flag_hubo_captura = TRUE en alguna descripción.';
 COMMENT ON COLUMN public.metricas_zona.cnt_personas_en_zona IS 'Cantidad de usuarios distintos que registraron ubicación en esta celda en las últimas 24h.';
 COMMENT ON COLUMN public.metricas_zona.fecha_fin_vigencia IS 'NULL = registro vigente. Fecha = registro histórico cerrado.';
+
+

@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.pol_homologacion_google
 -- Módulo político: mapea los nombres que devuelve Google Reverse Geocoding
 -- a territorios oficiales en pol_territorios.
@@ -58,3 +64,5 @@ CREATE INDEX IF NOT EXISTS idx_pol_homologacion_lookup
 
 CREATE INDEX IF NOT EXISTS idx_pol_homologacion_territorio
     ON public.pol_homologacion_google(territorio_id);
+
+

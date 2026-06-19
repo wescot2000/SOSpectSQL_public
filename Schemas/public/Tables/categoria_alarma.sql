@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.categoria_alarma
 
 -- DROP TABLE IF EXISTS public.categoria_alarma;
@@ -33,3 +39,5 @@ INSERT INTO public.categoria_alarma (nombre, descripcion) VALUES
 ('INFORMATIVA', 'Información general de interés comunitario que no cae en otras categorías.'),
 ('ENTRETENIMIENTO', 'Eventos culturales, deportivos, sociales de interés comunitario.'),
 ('PUBLICIDAD', 'Alarmas de tipo publicitario (promociones locales, eventos comerciales, etc.)');
+
+

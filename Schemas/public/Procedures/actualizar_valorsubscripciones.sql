@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- PROCEDURE: public.actualizar_valorsubscripciones(integer, integer, integer, integer, character varying)
 -- Propósito: Actualiza el precio (cantidad_poderes) y/o la duración (tiempo_subscripcion_horas)
 --            de un registro en valorsubscripciones, guardando el snapshot anterior en
@@ -198,3 +204,5 @@ Parámetros:
 
 Ejemplo:
   CALL public.actualizar_valorsubscripciones(1, 5, NULL, NULL, ''LANZAMIENTO_2026'');';
+
+

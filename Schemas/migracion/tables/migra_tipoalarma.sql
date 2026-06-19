@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: migracion.migra_tipoalarma
 
 -- DROP TABLE IF EXISTS migracion.migra_tipoalarma;
@@ -47,3 +53,4 @@ ADD COLUMN tipo_cierre character varying(20);
 
 ALTER TABLE migracion.migra_tipoalarma
 ADD COLUMN color_fondo_feed character varying(9);
+

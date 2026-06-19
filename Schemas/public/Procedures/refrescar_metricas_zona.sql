@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Procedure: public.refrescar_metricas_zona
 -- Precálculo incremental de métricas de reportes básicos por celda geoespacial de 0.01°×0.01°.
 --
@@ -294,3 +300,5 @@ $$;
 
 COMMENT ON PROCEDURE public.refrescar_metricas_zona() IS
 'Precálculo incremental de métricas de reportes básicos por celda geoespacial 0.01°×0.01° (~1.1 km). Procesa solo celdas con actividad en los últimos 30 días. Por cada celda: (1) determina el corte desde fecha_hasta_alarmas del registro vigente; (2) calcula el delta de alarmas nuevas excluyendo falsas (calificacion_alarma < 50); (3) acumula sobre totales previos; (4) cierra el registro anterior (SCD Tipo 2) e inserta el nuevo; (5) sincroniza mv_metricas_zona (caché API). Reemplaza las funciones ConsultaParticipacionTiposAlarma, MetricasAlarmasEnZona y MetricasSueltasBasicas. Se ejecuta a las 0:05 UTC tras refrescar_metricas_politico. Creado: 2026-04-07.';
+
+

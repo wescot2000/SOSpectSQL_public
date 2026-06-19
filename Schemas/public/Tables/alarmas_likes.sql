@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.alarmas_likes
 -- Creado: 23-02-2026
 -- Propósito: Registro de "Me gusta" de usuarios a alarmas.
@@ -32,3 +38,5 @@ CREATE INDEX IF NOT EXISTS idx_likes_alarma ON public.alarmas_likes(alarma_id);
 
 COMMENT ON TABLE public.alarmas_likes IS
 'Registro de Me gusta de usuarios a alarmas. Cada usuario puede dar like una sola vez por alarma. Los likes incrementan el ranking_relevancia en el feed Para Ti.';
+
+

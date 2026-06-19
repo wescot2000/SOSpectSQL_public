@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- PROCEDURE: public.cierrealarma(bigint, character varying, character varying, boolean, boolean, character varying, character varying, boolean, boolean)
 
 -- DROP PROCEDURE IF EXISTS public.cierrealarma(bigint, character varying, character varying, boolean, boolean, character varying, character varying, boolean, boolean);
@@ -437,3 +443,5 @@ BEGIN
 	END;
 END
 $BODY$;
+
+

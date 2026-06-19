@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: migracion.migra_fotos_descripciones_alarmas
 -- CREADO: 2026-04-25 - Migración de fotos/videos adjuntos a descripciones de alarmas cerradas
 
@@ -22,3 +28,5 @@ CREATE TABLE IF NOT EXISTS migracion.migra_fotos_descripciones_alarmas
 )
 
 TABLESPACE pg_default;
+
+

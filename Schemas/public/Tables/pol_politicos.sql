@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.pol_politicos
 -- Módulo político: datos maestros del político.
 -- Los datos de cargo, territorio y vigencia temporal están en pol_vigencias,
@@ -35,3 +41,5 @@ COMMENT ON COLUMN public.pol_politicos.twitter IS
 
 CREATE INDEX IF NOT EXISTS idx_pol_politicos_nombre
     ON public.pol_politicos(nombre_completo);
+
+

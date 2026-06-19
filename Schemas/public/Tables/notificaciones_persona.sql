@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.notificaciones_persona
 
 -- DROP TABLE IF EXISTS public.notificaciones_persona;
@@ -50,3 +56,4 @@ CREATE INDEX IF NOT EXISTS idx_notif_persona_ultima_notif
 
 COMMENT ON COLUMN public.notificaciones_persona.ultima_notificacion_enviada
     IS 'Timestamp de la última notificación agregada enviada (throttling 10 min)';
+

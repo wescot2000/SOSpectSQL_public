@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- FUNCTION: public.actualizar_metricas_emprendimiento_realtime()
 -- Creado: 13-01-2026
 -- Actualizado: 13-01-2026 - Trigger ahora en chat_publicidad (no en tabla separada)
@@ -76,3 +82,5 @@ EXECUTE FUNCTION actualizar_metricas_emprendimiento_realtime();
 
 COMMENT ON TRIGGER trigger_actualizar_metricas_realtime ON public.chat_publicidad IS
 'Trigger que actualiza métricas del emprendimiento cuando se agrega o modifica una calificación de servicio en un chat publicitario.';
+
+

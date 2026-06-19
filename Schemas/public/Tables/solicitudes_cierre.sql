@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.solicitudes_cierre
 
 -- DROP TABLE IF EXISTS public.solicitudes_cierre;
@@ -64,3 +70,5 @@ CREATE INDEX IF NOT EXISTS idx_solicitudes_cierre_estado_fecha
     (estado COLLATE pg_catalog."default" ASC NULLS LAST, fecha_limite_votacion ASC NULLS LAST)
     TABLESPACE pg_default
     WHERE estado = 'activa'::text;
+
+

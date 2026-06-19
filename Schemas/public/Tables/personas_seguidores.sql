@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.personas_seguidores
 -- Creado: 23-02-2026
 -- Propósito: Relación de seguimiento estilo red social (gratuito, sin notificaciones push).
@@ -36,3 +42,5 @@ CREATE INDEX IF NOT EXISTS idx_seguido ON public.personas_seguidores(seguido_per
 
 COMMENT ON TABLE public.personas_seguidores IS
 'Relación de seguimiento gratuito estilo red social. Un seguidor ve las alarmas del seguido en la pestaña Siguiendo, sin recibir notificaciones push. Diferente a relacion_protegidos que implica pago y notificaciones.';
+
+

@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Procedure: public.refrescar_metricas_emprendedores
 -- Precálculo de métricas de emprendedores con ranking por país.
 --
@@ -169,3 +175,5 @@ $$;
 
 COMMENT ON PROCEDURE public.refrescar_metricas_emprendedores() IS
 'Precálculo de métricas de emprendedores con ranking por país. total_chats_mes_actual y promedio_tiempo_respuesta_minutos se calculan desde chat_publicidad (no desde emprendimientos). Ranking por reputacion_promedio DESC. Se ejecuta a las 22:00 UTC. Creado: 2026-04-09. Modificado: 2026-04-12.';
+
+

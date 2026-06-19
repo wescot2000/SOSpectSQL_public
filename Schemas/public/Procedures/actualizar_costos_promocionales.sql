@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- PROCEDURE: public.actualizar_costos_promocionales(integer, integer, integer, integer, integer, integer, integer, integer, character varying)
 -- Propósito: Actualiza uno o más costos en configuracion_costos_promocionales,
 --            guardando el snapshot completo anterior en historico_costos_promocionales.
@@ -234,3 +240,5 @@ Ejemplo completo (bajar precios para lanzamiento):
 
 Ejemplo parcial (cambiar solo el costo base):
   CALL public.actualizar_costos_promocionales(p_costo_base_promocion := 15, p_modificado_por := ''ADMIN'');';
+
+

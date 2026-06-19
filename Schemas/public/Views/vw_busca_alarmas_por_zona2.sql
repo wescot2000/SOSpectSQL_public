@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- View: public.vw_busca_alarmas_por_zona2
 -- Vista para HomePage con radio fijo de 10km y filtro de 90 minutos
 -- Fecha: 2025-12-16
@@ -193,4 +199,6 @@ CREATE OR REPLACE VIEW public.vw_busca_alarmas_por_zona2
         al.estado_alarma IS NOT NULL AND
         al.fecha_alarma > NOW() - interval '90 minutes'
     );
+
+
 

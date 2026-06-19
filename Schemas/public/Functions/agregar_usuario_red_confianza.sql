@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- FUNCTION: public.agregar_usuario_red_confianza(character varying, character varying, character varying)
 -- Modificado: 2026-04-02 — Se agrega p_nickname para que el líder asigne un apodo al nuevo miembro.
 --             El nickname se guarda en public.personas.nickname del usuario nuevo.
@@ -77,4 +83,6 @@ BEGIN
     RETURN NEXT;
 END;
 $BODY$;
+
+
 

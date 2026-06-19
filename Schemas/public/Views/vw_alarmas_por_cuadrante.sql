@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- View: public.vw_alarmas_por_cuadrante
 -- Creado: 23-02-2026
 -- Propósito: Vista agregada para el mapa dinámico. Agrupa alarmas activas en cuadrantes
@@ -32,3 +38,5 @@ GROUP BY
 
 COMMENT ON VIEW public.vw_alarmas_por_cuadrante IS
 'Vista de alarmas agrupadas en cuadrantes geográficos (~1.1km) para clustering en el mapa. Consumida por el endpoint ObtenerAlarmasPorZona al alejar el zoom del mapa.';
+
+

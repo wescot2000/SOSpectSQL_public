@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- PROCEDURE: public.actualizaparametrosnotificacion(character varying, boolean, boolean, boolean, boolean, integer, integer, integer, text[])
 -- MODIFICADO: 2026-02-26 - Agregar p_paises_feed_filtro para filtro de países en feed "Para Ti"
 
@@ -68,3 +74,5 @@ BEGIN
 	END;
 END
 $BODY$;
+
+

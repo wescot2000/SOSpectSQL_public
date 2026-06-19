@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.pol_metricas_territorio
 -- Módulo político: contadores pre-agregados de alarmas por territorio y período.
 -- Evita calcular en tiempo real cruzando PostgreSQL + S3 (datos migrados > 120 días).
@@ -63,3 +69,5 @@ CREATE INDEX IF NOT EXISTS idx_pol_metricas_pais
 
 CREATE INDEX IF NOT EXISTS idx_pol_metricas_periodo
     ON public.pol_metricas_territorio(periodo);
+
+

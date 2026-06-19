@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- TABLE: public.metricas_emprendedores
 -- Métricas de emprendedores precalculadas con ranking por país.
 -- Diseño SCD Tipo 2: cada ejecución diaria cierra el registro vigente e inserta uno nuevo,
@@ -56,3 +62,5 @@ COMMENT ON COLUMN public.metricas_emprendedores.pais IS 'País del propietario d
 COMMENT ON COLUMN public.metricas_emprendedores.puesto_en_pais IS 'Posición en el ranking nacional. 1 = mejor reputación en el país. Calculado con RANK() OVER (PARTITION BY pais ORDER BY reputacion_promedio DESC, total_calificaciones DESC).';
 COMMENT ON COLUMN public.metricas_emprendedores.fecha_fin_vigencia IS 'NULL = registro vigente. Fecha = registro histórico cerrado.';
 COMMENT ON COLUMN public.metricas_emprendedores.badges_ganados IS 'Copia del JSONB de badges del emprendimiento en el momento del cálculo.';
+
+

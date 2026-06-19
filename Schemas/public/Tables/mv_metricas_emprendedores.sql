@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- TABLE: public.mv_metricas_emprendedores
 -- Caché de lectura rápida de métricas de emprendedores para el endpoint de dashboard.
 -- Una fila por emprendimiento activo.
@@ -54,3 +60,5 @@ COMMENT ON TABLE public.mv_metricas_emprendedores IS
 'Caché de lectura rápida de métricas de emprendedores. Una fila por emprendimiento activo. Sincronizada diariamente por refrescar_metricas_emprendedores() desde metricas_emprendedores (SCD Tipo 2). Endpoint: GET /Emprendimientos/ObtenerDashboardEmprendedor. Creado: 2026-04-09.';
 
 COMMENT ON COLUMN public.mv_metricas_emprendedores.total_emprendedores_en_pais IS 'Total de emprendimientos activos en el mismo país. Se precalcula para no requerir COUNT en tiempo real.';
+
+

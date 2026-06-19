@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: migracion.migra_historico_valorsubscripciones
 -- CREADO: 2026-04-25 - Migración de historial de valores de subscripciones para análisis de precios
 
@@ -18,3 +24,5 @@ CREATE TABLE IF NOT EXISTS migracion.migra_historico_valorsubscripciones
 )
 
 TABLESPACE pg_default;
+
+

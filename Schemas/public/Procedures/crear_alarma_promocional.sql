@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- PROCEDURE: public.crear_alarma_promocional(bigint, bigint, double precision, double precision, text, integer, integer, integer, boolean, character varying, boolean, boolean, integer, character varying, boolean, bigint, bigint, integer, integer, character varying)
 -- ACTUALIZADO: 13-01-2026 - Agregado parámetro p_id_emprendimiento para soporte multi-emprendimiento
 
@@ -286,3 +292,5 @@ $BODY$;
 
 COMMENT ON PROCEDURE public.crear_alarma_promocional(bigint, bigint, double precision, double precision, text, integer, integer, integer, boolean, character varying, boolean, boolean, integer, character varying, boolean, bigint, bigint, integer, integer, character varying)
     IS 'Crea una alarma promocional completa: descuenta poderes, crea alarma, descripción y subscripción vinculada a un emprendimiento. Valida permisos del usuario sobre el emprendimiento. Incluye aceptación de términos del proveedor para chat. Es una transacción atómica que revierte todos los cambios si falla algún paso. ACTUALIZADO 13-01-2026: Agregado parámetro p_id_emprendimiento para soporte multi-emprendimiento.';
+
+

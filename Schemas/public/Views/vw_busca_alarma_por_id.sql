@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- View: public.vw_busca_alarma_por_id
 
 -- DROP VIEW public.vw_busca_alarma_por_id;
@@ -96,5 +102,7 @@ CREATE OR REPLACE VIEW public.vw_busca_alarma_por_id
             ) AS descripcionalarma
         FROM alarmas al_1
     ) descr ON al.alarma_id = descr.alarma_id;
+
+
 
 

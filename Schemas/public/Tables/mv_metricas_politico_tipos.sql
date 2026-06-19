@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.mv_metricas_politico_tipos
 -- Módulo político: distribución de alarmas por tipo para cada político vigente.
 -- Creado: 2026-03-09
@@ -24,3 +30,5 @@ COMMENT ON TABLE public.mv_metricas_politico_tipos IS
 
 CREATE INDEX IF NOT EXISTS idx_mv_metricas_tipos_politico
     ON public.mv_metricas_politico_tipos(politico_id);
+
+

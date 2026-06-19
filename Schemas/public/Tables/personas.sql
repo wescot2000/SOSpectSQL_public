@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.personas
 -- ACTUALIZADO: 13-01-2026 - Refactorización Multi-Emprendimiento
 -- CAMBIOS: Eliminados campos de métricas y emprendimiento (movidos a tabla emprendimientos)
@@ -117,3 +123,5 @@ CREATE INDEX IF NOT EXISTS idx_loginpersonas
 -- ❌ ÍNDICES ELIMINADOS (campos movidos a emprendimientos):
 -- DROP INDEX IF EXISTS public.idx_personas_es_proveedor;
 -- DROP INDEX IF EXISTS public.idx_personas_reputacion;
+
+

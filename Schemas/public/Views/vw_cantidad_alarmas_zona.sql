@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- View: public.vw_cantidad_alarmas_zona
 -- Rediseno con PostGIS ST_DWithin para filtrado de proximidad preciso en metros.
 -- Cuenta alarmas activas de SEGURIDAD/POLITICA dentro del radio del usuario.
@@ -84,3 +90,5 @@ Radio efectivo = GREATEST(radio_interes_metros del tipoalarma, radio suscripcion
 Usa ST_DWithin(geography) para distancias precisas en metros.
 Usa notificaciones_persona como filtro anti-duplicado para no contar alarmas ya notificadas.
 Usado por InsertarUbicacion y InsertaUbicacionBackground.';
+
+

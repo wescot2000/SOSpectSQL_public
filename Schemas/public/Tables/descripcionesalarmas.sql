@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.descripcionesalarmas
 
 -- DROP TABLE IF EXISTS public.descripcionesalarmas;
@@ -62,3 +68,4 @@ COMMENT ON COLUMN public.descripcionesalarmas.flag_persona_encontrada IS
 
 COMMENT ON COLUMN public.descripcionesalarmas.flag_mascota_recuperada IS
 'Indica si la mascota perdida fue recuperada al momento del cierre de alarma. Solo aplica para tipo_cierre=cierre_mascota (tipoalarma_id=4). Agregado: 06-02-2026.';
+

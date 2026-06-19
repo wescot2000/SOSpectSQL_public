@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.alarmas_reenvios
 -- Creado: 23-02-2026
 -- Propósito: Registro de reenvíos (Retweet) de alarmas por usuarios.
@@ -35,3 +41,5 @@ CREATE INDEX IF NOT EXISTS idx_reenvios_persona ON public.alarmas_reenvios(perso
 
 COMMENT ON TABLE public.alarmas_reenvios IS
 'Registro de reenvíos (equivalente a Retweet) de alarmas. Cuando un usuario reenvía, la alarma aparece en el feed Siguiendo de sus seguidores. Máximo un reenvío por usuario por alarma.';
+
+

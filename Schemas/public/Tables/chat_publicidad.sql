@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.chat_publicidad
 -- ACTUALIZADO: 14-01-2026 - Refactorización Multi-Emprendimiento
 -- CAMBIOS:
@@ -122,3 +128,5 @@ COMMENT ON COLUMN public.chat_publicidad.fecha_pedido IS
 
 COMMENT ON COLUMN public.chat_publicidad.fecha_entrega_confirmada IS
 'Fecha y hora en que se confirmó la entrega del pedido. Usado por ETL para calcular promedio_tiempo_entrega_horas.';
+
+

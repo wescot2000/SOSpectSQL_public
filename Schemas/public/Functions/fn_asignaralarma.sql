@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- FUNCTION: public.fn_asignaralarma(bigint, character varying, character varying)
 
 -- DROP FUNCTION IF EXISTS public.fn_asignaralarma(bigint, character varying, character varying);
@@ -179,5 +185,7 @@ EXCEPTION
 
 END;
 $BODY$;
+
+
 
 

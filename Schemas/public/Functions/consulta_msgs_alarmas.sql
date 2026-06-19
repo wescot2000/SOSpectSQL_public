@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- FUNCTION: public.consulta_msgs_alarmas(character varying, bigint)
 -- Rediseño 2026-02-08: Enriquecer mensajes con metadata de la alarma (tipo, descripción, foto, distancia, logo)
 
@@ -157,4 +163,6 @@ BEGIN
     GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12;
 END;
 $BODY$;
+
+
 

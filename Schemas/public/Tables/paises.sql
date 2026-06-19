@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.paises
 -- Tabla maestra de países con código ISO Alpha-2 como PK
 -- Creado: 2026-02-26
@@ -21,3 +27,5 @@ TABLESPACE pg_default;
 
 
 COMMENT ON TABLE public.paises IS 'Tabla maestra de países. pais_id = ISO Alpha-2 (2 caracteres: CO, MX, US). nombre_es = nombre en español. Usada para resolver personas.pais, dispositivos.pais_id y ubicaciones.pais_id.';
+
+

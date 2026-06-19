@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.historico_costos_promocionales
 -- Propósito: Conserva el historial de cambios de la tabla configuracion_costos_promocionales.
 -- Cada fila representa un snapshot completo de la configuración vigente durante un período.
@@ -81,3 +87,5 @@ COMMENT ON COLUMN public.historico_costos_promocionales.fecha_fin_vigencia IS
 
 COMMENT ON COLUMN public.historico_costos_promocionales.modificado_por IS
 'Usuario o proceso que realizó el cambio (ej: LANZAMIENTO_2026, ADMIN).';
+
+

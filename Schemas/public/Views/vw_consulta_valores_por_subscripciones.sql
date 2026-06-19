@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- View: public.vw_consulta_valores_por_subscripciones
 -- Modificado: 2026-04-02
 -- Cambios: Se eliminaron tipos 4, 5, 6 de valorsubscripciones (anuncios con costos estáticos erróneos).
@@ -108,5 +114,7 @@ CREATE OR REPLACE VIEW public.vw_consulta_valores_por_subscripciones
    FROM public.configuracion_costos_promocionales
 
  ORDER BY tipo_subscr_id;
+
+
 
 

@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- View: public.vw_tipoalarma_estadistica_30d
 -- Vista de estadísticas de tipos de alarma en los últimos 30 días
 -- Fecha: 2025-12-20
@@ -49,3 +55,5 @@ ORDER BY porcentaje_ultimo_mes DESC, ta.tipoalarma_id ASC;
 
 COMMENT ON VIEW public.vw_tipoalarma_estadistica_30d IS
 'Vista de estadísticas de tipos de alarma en los últimos 30 días. Calcula porcentaje de participación global por tipo de alarma. Fecha: 2025-12-20. Referencia: ManualGeneralSOSpect.md [CAMBIO - 19-12-2025 14:00]';
+
+

@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- FUNCTION: public.obtenersolicitudcierreactiva(bigint, character varying)
 
 -- DROP FUNCTION IF EXISTS public.obtenersolicitudcierreactiva(bigint, character varying);
@@ -66,3 +72,5 @@ $BODY$;
 
 COMMENT ON FUNCTION public.obtenersolicitudcierreactiva(bigint, character varying) IS
 'Retorna la solicitud de cierre activa para una alarma, incluyendo si el usuario ya votó, cuál fue su voto, si es el proponente del cierre (es_proponente), y las fotos de la propuesta (fotos_json). Modificado: 2026-04 — agregado es_proponente.';
+
+

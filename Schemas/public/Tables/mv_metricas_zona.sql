@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- TABLE: public.mv_metricas_zona
 -- Caché de lectura rápida de métricas de zona para los 3 reportes básicos de la API.
 -- Una fila por celda geoespacial de 0.01° × 0.01° (~1.1 km).
@@ -54,3 +60,5 @@ CREATE INDEX IF NOT EXISTS idx_mv_metricas_zona_celda
 
 COMMENT ON TABLE public.mv_metricas_zona IS
 'Caché de lectura rápida de métricas por celda geoespacial (0.01°×0.01°, ~1.1 km). Una fila por celda. Sincronizada diariamente por refrescar_metricas_zona() desde metricas_zona (SCD Tipo 2). Reemplaza las funciones ConsultaParticipacionTiposAlarma, MetricasAlarmasEnZona y MetricasSueltasBasicas en los endpoints de la API para evitar queries pesadas en tiempo real. Creado: 2026-04-07.';
+
+

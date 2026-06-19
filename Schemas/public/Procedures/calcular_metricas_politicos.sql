@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- PROCEDURE: public.calcular_metricas_politicos()
 -- Módulo político: recalcula los contadores en pol_metricas_territorio.
 --
@@ -176,3 +182,5 @@ $BODY$;
 
 COMMENT ON PROCEDURE public.calcular_metricas_politicos() IS
 'Recalcula contadores de alarmas en pol_metricas_territorio para los períodos 24H, 7D y 30D. Calcula en orden: DISTRITO → CIUDAD → REGION (suma de ciudades) → PAIS. Ejecutar periódicamente (cron diario recomendado).';
+
+

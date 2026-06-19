@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- FUNCTION: public.consultar_usuario_para_red_confianza(character varying)
 -- MODIFICADO: 2026-02-26 - Resolver nombre del país desde tabla paises (ISO alpha-2 → nombre legible)
 --   personas.pais ahora almacena ISO alpha-2 (CO, MX); la UI requiere el nombre en español
@@ -96,4 +102,6 @@ BEGIN
         v_user.numero_movil;
 END;
 $BODY$;
+
+
 

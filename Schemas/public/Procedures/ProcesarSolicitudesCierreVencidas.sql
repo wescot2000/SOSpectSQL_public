@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- PROCEDURE: public.procesarsolicitudescierrevencidas()
 -- Convertido de FUNCTION a PROCEDURE: 2026-04-08
 -- Motivo: se ejecuta exclusivamente vía pg_cron (CALL); nadie consume el resultado de retorno.
@@ -112,3 +118,5 @@ $$;
 
 COMMENT ON PROCEDURE public.procesarsolicitudescierrevencidas() IS
 'Procesa solicitudes de cierre comunitario (tabla solicitudes_cierre) cuyo período de votación (24h) ha expirado. Si mayoría a favor o nadie votó: aprueba y cierra alarma (estado_alarma=C). Si mayoría en contra: deniega. Registra descripción de cierre para categorías SEGURIDAD y POLITICA. Convertido de FUNCTION a PROCEDURE el 2026-04-08 para permitir CALL desde pg_cron.';
+
+

@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.pol_cargos
 -- Módulo político: catálogo de cargos públicos electos.
 -- El nivel_territorial indica a qué nivel del árbol geográfico corresponde el cargo,
@@ -33,4 +39,6 @@ COMMENT ON COLUMN public.pol_cargos.nivel_territorial IS
 
 COMMENT ON COLUMN public.pol_cargos.orden_jerarquico IS
 'Posición en la cadena de autoridad. 1=Presidente (mayor jerarquía), 4=Edil (más granular). Ordena la lista en la pantalla MAUI de menor a mayor granularidad.';
+
+
 

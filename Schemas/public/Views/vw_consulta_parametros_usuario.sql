@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- View: public.vw_consulta_parametros_usuario
 -- MODIFICADO: 2026-03-02 - Revertir JOIN paises_convenios a pais_id.
 --   iso_alpha_2 fue agregada a la tabla pero nunca se pobló (0 registros), causando que
@@ -82,5 +88,7 @@ CREATE OR REPLACE VIEW public.vw_consulta_parametros_usuario
            FROM obtener_radio_alarmas(p.user_id_thirdparty) obtener_radio_alarmas(radio_alarmas_id, radio_mts))), p.credibilidad_persona,coalesce(p.flag_red_confianza, cast(FALSE as boolean)),pc.flag,
     ccp.costo_base_promocion, ccp.costo_logo, ccp.costo_contacto, ccp.costo_domicilio,
     ccp.costo_por_500m_extra, ccp.costo_por_dia_extra, ccp.costo_por_media_extra, ccp.costo_por_50_usuarios_push, p.limite_alarmas_feed;
+
+
 
 

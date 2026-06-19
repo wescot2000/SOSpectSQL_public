@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- View: public.vw_mis_subscripciones
 
 -- DROP VIEW public.vw_mis_subscripciones;
@@ -75,5 +81,7 @@ CREATE OR REPLACE VIEW public.vw_mis_subscripciones
    FROM ranked_subscriptions rk
   WHERE rk.fecha_finalizacion > now() OR rk.fecha_finalizacion < now() AND rk.rn <= 3
   ORDER BY rk.fecha_finalizacion DESC;
+
+
 
 

@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.subscripciones
 -- ACTUALIZADO: 14-01-2026 - Refactorización Multi-Emprendimiento
 -- CAMBIOS:
@@ -134,3 +140,4 @@ COMMENT ON COLUMN public.subscripciones.fecha_proveedor_acepto_terminos IS
 
 COMMENT ON COLUMN public.subscripciones.id_emprendimiento IS
 'FK a emprendimientos. Asocia esta suscripción publicitaria a un emprendimiento específico. El logo del emprendimiento está en emprendimientos.url_logo (NO en subscripciones). Agregado: 13-01-2026.';
+

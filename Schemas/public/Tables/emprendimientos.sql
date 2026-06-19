@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.emprendimientos
 -- Creado: 13-01-2026
 -- Propósito: Separar datos de emprendimientos de personas, permitiendo multi-emprendimiento por usuario
@@ -140,3 +146,5 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_uk_nit_cedula_activo
 
 COMMENT ON INDEX public.idx_uk_nit_cedula_activo IS
 'Índice único parcial: garantiza que solo exista UN emprendimiento activo por NIT (fecha_fin IS NULL). Permite múltiples registros históricos del mismo NIT para versionamiento de logos.';
+
+

@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- TABLE: public.metricas_politico
 -- Fuente de verdad de métricas de desempeño por político.
 -- Diseño SCD Tipo 2 (Slowly Changing Dimension): cada ejecución diaria del cron
@@ -75,3 +81,5 @@ COMMENT ON COLUMN public.metricas_politico.fecha_hasta_alarmas IS 'NOW() en el m
 COMMENT ON COLUMN public.metricas_politico.cnt_cierres_con_fecha IS 'Número de cierres con fecha conocida (flag_es_cierre_alarma=TRUE). Usado como peso para el promedio ponderado de avg_dias_resolucion en ciclos futuros.';
 COMMENT ON COLUMN public.metricas_politico.tipos_alarma IS 'Distribución de alarmas por tipo. Formato JSONB: [{"tipoalarma_id":N,"cnt":N,"pct":N.N}]. Espejo en mv_metricas_politico_tipos para lectura rápida de la API.';
 COMMENT ON COLUMN public.metricas_politico.fecha_fin_vigencia IS 'NULL = registro actualmente vigente. Fecha = registro histórico cerrado en esa fecha.';
+
+

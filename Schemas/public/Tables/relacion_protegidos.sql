@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.relacion_protegidos
 
 -- DROP TABLE IF EXISTS public.relacion_protegidos;
@@ -38,3 +44,4 @@ CREATE INDEX IF NOT EXISTS idx_relacion_protegidos_fecha_finalizacion
     ON public.relacion_protegidos USING btree
     (fecha_finalizacion ASC NULLS LAST)
     TABLESPACE pg_default;
+

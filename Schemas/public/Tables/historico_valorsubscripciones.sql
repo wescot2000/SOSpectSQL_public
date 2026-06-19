@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.historico_valorsubscripciones
 -- Propósito: Conserva el historial de cambios de precios en la tabla valorsubscripciones.
 -- Cada fila representa una configuración vigente para un registro de valorsubscripciones
@@ -64,3 +70,5 @@ COMMENT ON COLUMN public.historico_valorsubscripciones.fecha_fin_vigencia IS
 
 COMMENT ON COLUMN public.historico_valorsubscripciones.modificado_por IS
 'Usuario o proceso que realizó el cambio (ej: LANZAMIENTO_2026, ADMIN).';
+
+

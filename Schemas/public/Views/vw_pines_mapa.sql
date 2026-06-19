@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Vista: vw_pines_mapa
 -- Propósito: Provee los datos necesarios para pintar alarmas en el mapa con todos sus badges
 --            e InfoWindow (tipo, distancia, interacciones, policía, red de confianza, creador).
@@ -40,3 +46,5 @@ JOIN public.personas  alper ON alper.persona_id  = al.persona_id
 WHERE
     al.estado_alarma IS NULL
     OR (al.estado_alarma IS NOT NULL AND al.fecha_alarma > NOW() - INTERVAL '90 minutes');
+
+

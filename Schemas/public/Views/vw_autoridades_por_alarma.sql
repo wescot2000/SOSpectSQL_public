@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- View: public.vw_autoridades_por_alarma
 -- Módulo político: dado un alarma_id, devuelve la cadena completa de autoridades vigentes.
 --
@@ -300,3 +306,5 @@ ORDER BY alarma_id, orden_jerarquico;
 
 COMMENT ON VIEW public.vw_autoridades_por_alarma IS
 'Dado un alarma_id, resuelve la cadena completa de autoridades vigentes (Edil/DISTRITO → Alcalde/CIUDAD → Gobernador/REGION → Presidente/PAIS). Usa pol_homologacion_google para mapear barrio/ciudad de Google a territorios oficiales. Incluye fallback: si barrio no resuelve, usa ciudad; siempre incluye Presidente si hay país. pct_resolucion y pct_aprobacion vienen de mv_metricas_politico (pueden ser NULL si no se ha refrescado aún).';
+
+

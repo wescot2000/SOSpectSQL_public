@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- FUNCTION: public.contar_usuarios_en_radio(numeric, numeric, integer)
 
 -- DROP FUNCTION IF EXISTS public.contar_usuarios_en_radio(numeric, numeric, integer);
@@ -44,3 +50,5 @@ $BODY$;
 
 COMMENT ON FUNCTION public.contar_usuarios_en_radio(numeric, numeric, integer)
     IS 'Cuenta la cantidad de usuarios únicos dentro de un radio geográfico específico, basándose en su última ubicación conocida.';
+
+

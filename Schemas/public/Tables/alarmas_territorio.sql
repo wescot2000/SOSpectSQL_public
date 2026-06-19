@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.alarmas_territorio
 
 -- DROP TABLE IF EXISTS public.alarmas_territorio;
@@ -71,3 +77,5 @@ ON public.alarmas_territorio(pais_id);
 CREATE INDEX IF NOT EXISTS idx_alarmas_territorio_ciudad
 ON public.alarmas_territorio(ciudad)
 WHERE ciudad IS NOT NULL;
+
+

@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- Table: public.pol_vigencias
 -- Módulo político: relaciona político × cargo × territorio × período de mandato.
 -- Una fila por mandato. El mismo político puede tener registros históricos.
@@ -79,3 +85,5 @@ CREATE UNIQUE INDEX IF NOT EXISTS uq_vigencia_activa_territorio
 CREATE UNIQUE INDEX IF NOT EXISTS uq_vigencia_activa_pais
     ON public.pol_vigencias(cargo_id, pais_id)
     WHERE fecha_fin IS NULL AND pais_id IS NOT NULL;
+
+

@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- FUNCTION: public.calcular_costo_publicidad(integer, integer, integer, boolean, boolean, boolean, integer)
 
 -- DROP FUNCTION IF EXISTS public.calcular_costo_publicidad(integer, integer, integer, boolean, boolean, boolean, integer);
@@ -72,3 +78,5 @@ $BODY$;
 
 COMMENT ON FUNCTION public.calcular_costo_publicidad(integer, integer, integer, boolean, boolean, boolean, integer)
     IS 'Calcula el costo en poderes de una alarma publicitaria basándose en los parámetros configurados. Base: 40 poderes (100m, 1 día, 1 media).';
+
+

@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- View: public.vw_feed_para_ti
 -- Vista del feed NACIONAL "Para Ti" (pestaña "Para Ti" de DescribirPage).
 -- Clon de vw_alarmas_completa con DOS diferencias clave:
@@ -284,3 +290,5 @@ ORDER BY
     END DESC,
     al.fecha_alarma DESC,
     al.alarma_id DESC;
+
+

@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- FUNCTION: public.calcular_badges_proveedor(bigint)
 -- Creado: 13-01-2026
 -- Propósito: Calcular badges ganados por un emprendimiento basándose en sus métricas
@@ -134,3 +140,5 @@ Actualizado: 13-01-2026 - Migrado desde tabla personas a tabla emprendimientos.'
 -- Ejemplo de uso:
 -- SELECT calcular_badges_proveedor(1);
 -- Retorna: [{"id": "nuevo_vendedor", "nombre": "Nuevo Vendedor", "icono": "🌱", "descripcion": "..."}]
+
+

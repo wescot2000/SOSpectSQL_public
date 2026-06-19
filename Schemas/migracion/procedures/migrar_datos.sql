@@ -1,3 +1,9 @@
+-- Codigo de William Gerardo Escobar Torres
+-- Desarrollador: William Gerardo Escobar Torres
+-- LinkedIn: https://www.linkedin.com/in/william-gerardo-escobar-torres-29458b66/
+-- Correo: wescot2000@gmail.com
+-- Registro DNDA: 13-91-449, 19-sept.-2022
+
 -- PROCEDURE: migracion.migrar_datos()
 -- MODIFICADO: 16-02-2026 - Cambio de RAISE WARNING a RAISE EXCEPTION para detectar errores de migración
 -- MODIFICADO: 23-02-2026 - Ampliar retención de datos de 32 días a 120 días
@@ -1386,3 +1392,5 @@ BEGIN
 
 END;
 $BODY$;
+
+

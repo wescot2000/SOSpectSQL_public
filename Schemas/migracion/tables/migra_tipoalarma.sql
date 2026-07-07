@@ -54,3 +54,12 @@ ADD COLUMN tipo_cierre character varying(20);
 ALTER TABLE migracion.migra_tipoalarma
 ADD COLUMN color_fondo_feed character varying(9);
 
+ALTER TABLE migracion.migra_tipoalarma
+ADD COLUMN tipoalarma_id_ruta integer;
+
+ALTER TABLE migracion.migra_tipoalarma
+ADD COLUMN flag_alarma_derivada boolean NOT NULL DEFAULT false;
+
+ALTER TABLE migracion.migra_tipoalarma
+ADD COLUMN flag_envia_notificacion boolean NOT NULL DEFAULT true;
+

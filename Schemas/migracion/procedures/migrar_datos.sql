@@ -1377,7 +1377,16 @@ BEGIN
 		  AND (NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'solicitudes_cierre')
 		       OR a.alarma_id NOT IN (SELECT DISTINCT alarma_id FROM public.solicitudes_cierre WHERE alarma_id IS NOT NULL))
 		  AND (NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'alarmas_territorio')
-		       OR a.alarma_id NOT IN (SELECT DISTINCT alarma_id FROM public.alarmas_territorio WHERE alarma_id IS NOT NULL));
+		       OR a.alarma_id NOT IN (SELECT DISTINCT alarma_id FROM public.alarmas_territorio WHERE alarma_id IS NOT NULL))
+		  -- Guardas agregadas 2026-07-06: estas 4 tablas tienen FK RESTRICT/NO ACTION contra alarmas
+		  -- y NO se purgan aqui de forma incondicional (descripcionesalarmas/atencion_policiaca/
+		  -- notificaciones_persona se borran arriba solo si ya fueron migradas; reportes_abuso no
+		  -- se toca en absoluto). Sin esta guarda, el DELETE fallaba con
+		  -- "violates RESTRICT setting of foreign key constraint" en cuanto quedaba una fila huerfana.
+		  AND a.alarma_id NOT IN (SELECT DISTINCT alarma_id FROM public.descripcionesalarmas)
+		  AND a.alarma_id NOT IN (SELECT DISTINCT alarma_id FROM public.atencion_policiaca WHERE alarma_id IS NOT NULL)
+		  AND a.alarma_id NOT IN (SELECT DISTINCT alarma_id FROM public.notificaciones_persona)
+		  AND a.alarma_id NOT IN (SELECT DISTINCT alarma_id FROM public.reportes_abuso WHERE alarma_id IS NOT NULL);
 		DELETE FROM public.subscripciones p WHERE p.subscripcion_id IN (SELECT subscripcion_id FROM migracion.migra_subscripciones)	;
 		DELETE FROM public.ubicaciones_testing p WHERE p.ubicacion_id IN (SELECT ubicacion_id FROM migracion.migra_ubicaciones_testing);
 		DELETE FROM public.poderes_regalados p WHERE p.id_regalo IN (SELECT id_regalo FROM migracion.migra_poderes_regalados);

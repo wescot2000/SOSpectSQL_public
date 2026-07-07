@@ -20,4 +20,7 @@ CREATE TABLE IF NOT EXISTS wiped.notificaciones_persona
 
 TABLESPACE pg_default;
 
+ALTER TABLE wiped.notificaciones_persona
+ADD COLUMN fecha_tap_notificacion timestamp with time zone;
+
 

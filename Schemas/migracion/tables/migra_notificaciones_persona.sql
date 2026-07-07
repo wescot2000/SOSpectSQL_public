@@ -20,4 +20,7 @@ CREATE TABLE IF NOT EXISTS migracion.migra_notificaciones_persona
 
 TABLESPACE pg_default;
 
+ALTER TABLE migracion.migra_notificaciones_persona
+ADD COLUMN fecha_tap_notificacion timestamp with time zone;
+
 

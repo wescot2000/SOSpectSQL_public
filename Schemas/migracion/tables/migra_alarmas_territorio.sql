@@ -22,4 +22,7 @@ CREATE TABLE IF NOT EXISTS migracion.migra_alarmas_territorio
 
 TABLESPACE pg_default;
 
+ALTER TABLE migracion.migra_alarmas_territorio
+ADD COLUMN pais_id character varying(2);
+
 
